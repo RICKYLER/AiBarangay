@@ -8,12 +8,14 @@ import { MAP_FILTERS, MAP_MARKERS } from '@/lib/data/publicData';
 
 /**
  * CommunityMapPreview — public GIS panel with category filters, legend,
- * and an anonymization notice. `expanded` renders the tall page variant.
+ * and an anonymization notice. `expanded` renders the tall page variant;
+ * `flat` drops the section padding/border so the panel can be embedded
+ * inside another section (landing page GIS chapter).
  *
  * Privacy: the public map never shows resident names, contact details,
  * or exact household locations — only generalized, anonymized markers.
  */
-export default function CommunityMapPreview({ expanded = false }) {
+export default function CommunityMapPreview({ expanded = false, flat = false }) {
   const [filter, setFilter] = useState('all');
 
   const visibleCount = MAP_MARKERS.filter(
@@ -22,7 +24,7 @@ export default function CommunityMapPreview({ expanded = false }) {
 
   return (
     <section
-      className={expanded ? 'pub-page' : 'pub-section alt'}
+      className={expanded ? 'pub-page' : flat ? 'pub-st-map-flat' : 'pub-section alt'}
       aria-labelledby="pub-map-title"
     >
       <div className="pub-container">

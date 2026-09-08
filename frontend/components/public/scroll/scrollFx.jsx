@@ -77,11 +77,15 @@ export function useScrub(ref, mode = 'through') {
 }
 
 /**
- * useScrubIndex — quantized scrub progress for step-driven sections
- * (workflow timeline, report tracking). Returns an integer 0..count
- * so React only re-renders when the active step actually changes.
+ * useScrubIndex — scroll-spy for step-driven sections (workflow timeline,
+ * report tracking). Returns the index (0..count) of the child step whose
+ * card currently sits at the viewport anchor line, so the counter advances
+ * one step at a time: 01 while the first step is on screen, 02 once the
+ * visitor scrolls the second step up to the anchor, and so on. Steps are
+ * the direct children of the referenced element. Purely informational
+ * (no motion), so it runs even under prefers-reduced-motion.
  */
-export function useScrubIndex(ref, count, from = 0.08, to = 0.88) {
+export function useScrubIndex(ref, count, anchor = 0.4) {
   const [index, setIndex] = useState(0);
   useEffect(() => {
     const el = ref.current;
@@ -91,12 +95,13 @@ export function useScrubIndex(ref, count, from = 0.08, to = 0.88) {
     let last = -1;
     const update = () => {
       ticking = false;
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight || 1;
-      const span = rect.height > vh ? rect.height - vh : rect.height;
-      const p = span > 0 ? clamp01(-rect.top / span) : 1;
-      const t = clamp01((p - from) / (to - from));
-      const next = Math.min(count, Math.floor(t * (count + 1)));
+      const line = (window.innerHeight || 1) * anchor;
+      const steps = el.children;
+      let next = 0;
+      for (let i = 0; i < steps.length; i++) {
+        if (steps[i].getBoundingClientRect().top <= line) next = i;
+      }
+      next = Math.min(next, count);
       if (next !== last) {
         last = next;
         setIndex(next);
@@ -116,7 +121,7 @@ export function useScrubIndex(ref, count, from = 0.08, to = 0.88) {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
     };
-  }, [ref, count, from, to]);
+  }, [ref, count, anchor]);
   return index;
 }
 

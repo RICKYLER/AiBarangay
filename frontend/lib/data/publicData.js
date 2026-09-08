@@ -114,6 +114,67 @@ export const PROCESS_STEPS = [
   },
 ];
 
+/* ---------------- System story (landing page: the complete flow) ----------------
+   The full journey of one problem through the system, told as seven
+   chapters on the landing page. */
+export const SYSTEM_STEPS = [
+  {
+    num: '01',
+    key: 'resident-report',
+    title: 'RESIDENT REPORT',
+    text: 'A resident describes a community problem in plain words, pins the location on the map, and attaches photos as evidence.',
+  },
+  {
+    num: '02',
+    key: 'ai-analysis',
+    title: 'AI ANALYSIS',
+    text: 'The system reads the report, recommends a category and priority, and checks the area for related reports.',
+  },
+  {
+    num: '03',
+    key: 'human-verification',
+    title: 'HUMAN VERIFICATION',
+    text: 'Authorized barangay personnel review the evidence and confirm the problem is real. AI never decides alone.',
+  },
+  {
+    num: '04',
+    key: 'incident',
+    title: 'INCIDENT',
+    text: 'The verified report becomes an official barangay incident — time-stamped, categorized, and mapped.',
+  },
+  {
+    num: '05',
+    key: 'assignment',
+    title: 'ASSIGNMENT',
+    text: 'The incident is routed to the office responsible for that type of problem.',
+  },
+  {
+    num: '06',
+    key: 'field-response',
+    title: 'FIELD RESPONSE',
+    text: 'Personnel respond on site, and progress is recorded on the incident.',
+  },
+  {
+    num: '07',
+    key: 'resolution',
+    title: 'RESOLUTION',
+    text: 'The resolution is recorded, the incident is closed, and the resident can see the outcome.',
+  },
+];
+
+/* ---------------- Report lifecycle (shared by the landing chapters) ----------------
+   The six official stages every report passes through. Icons/tones are
+   consumed by the landing page's lifecycle story and transparency
+   roadmap; the texts are the canonical public wording. */
+export const LIFECYCLE_STAGES = [
+  { num: '01', key: 'submitted', title: 'Submitted', text: 'Report received and time-stamped.', icon: 'Send', tone: 'dark' },
+  { num: '02', key: 'review', title: 'Under Review', text: 'Barangay personnel review the report.', icon: 'ClipboardCheck', tone: 'teal' },
+  { num: '03', key: 'verified', title: 'Verified', text: 'Problem confirmed as a valid incident.', icon: 'ShieldCheck', tone: 'dark' },
+  { num: '04', key: 'assigned', title: 'Assigned', text: 'Routed to the responsible office.', icon: 'UserRoundCheck', tone: 'teal' },
+  { num: '05', key: 'response', title: 'Field Response', text: 'Personnel respond on site.', icon: 'HardHat', tone: 'dark' },
+  { num: '06', key: 'resolved', title: 'Resolved', text: 'Resolution recorded and incident closed.', icon: 'CircleCheck', tone: 'green' },
+];
+
 /* ---------------- Reportable problems ---------------- */
 export const REPORT_CATEGORIES = [
   { key: 'flooding', label: 'Flooding', icon: 'CloudRain', text: 'Flooded streets, drainage overflow, and heavy rain hazards.' },
@@ -186,11 +247,36 @@ export const REPORT_JOURNEY = [
 
 /* ---------------- AI capabilities ---------------- */
 export const AI_CAPABILITIES = [
-  { key: 'classification', icon: 'Tags', title: 'REPORT CLASSIFICATION', text: 'Helps organize incoming reports.' },
+  { key: 'language', icon: 'MessageSquareText', title: 'NATURAL-LANGUAGE ANALYSIS', text: 'Understands reports written in plain, everyday words.' },
+  { key: 'classification', icon: 'Tags', title: 'CATEGORY RECOMMENDATION', text: 'Suggests how to organize incoming reports.' },
+  { key: 'priority', icon: 'Flag', title: 'PRIORITY RECOMMENDATION', text: 'Helps identify reports requiring attention.' },
   { key: 'duplicates', icon: 'Copy', title: 'DUPLICATE DETECTION', text: 'Identifies potentially related reports.' },
-  { key: 'priority', icon: 'Flag', title: 'PRIORITY ANALYSIS', text: 'Helps identify reports requiring attention.' },
   { key: 'patterns', icon: 'LineChart', title: 'PATTERN DETECTION', text: 'Helps identify recurring community problems.' },
+  { key: 'location', icon: 'MapPinned', title: 'LOCATION-BASED ANALYSIS', text: 'Connects reports to zones, clusters, and hotspots.' },
 ];
+
+/* ---------------- AI demo (landing page illustration, SAMPLE DATA) ----------------
+   One raw report progressively transformed into structured incident
+   intelligence by the AI pipeline visualization. */
+export const AI_DEMO = {
+  /* What the resident submits */
+  input: {
+    text: '“Kanal na tabon sa basura, bumaha na naman sa kalsada namin pag-ulan. Malapit sa basketball court.”',
+    textNote: 'Submitted in plain language — no forms, no categories to pick.',
+    image: '2 photos attached',
+    location: 'Pinned near the covered court · Zone 3',
+    time: 'Today · 4:32 PM',
+  },
+  /* What the system recommends for personnel to review */
+  outputs: [
+    { key: 'category', label: 'CATEGORY', value: 'Flooding / Drainage', confidence: 'Suggested' },
+    { key: 'priority', label: 'PRIORITY', value: 'High — recurring, road access affected', confidence: 'Suggested' },
+    { key: 'duplicate', label: 'DUPLICATE DETECTION', value: '2 related reports within 150 m this week', confidence: 'Possible duplicates flagged' },
+    { key: 'location', label: 'LOCATION ANALYSIS', value: 'Inside Zone 3 flooding hotspot', confidence: 'Pattern match' },
+  ],
+  /* The final human decision */
+  verification: 'Verified by Barangay Personnel · Incident #BRGY-1042 created',
+};
 
 /* ---------------- Privacy & trust ---------------- */
 export const PRIVACY_ITEMS = [

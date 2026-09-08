@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>OG image — AI Barangay Problem Mapper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #eeeeee;
+    --dark: #1f6f5f;
+    --teal: #2fa084;
+    --text-3: #6e7b76;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+    --display: 'Space Grotesk', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { width: 1200px; height: 630px; background: var(--bg); overflow: hidden; position: relative; font-family: var(--mono); }
+
+  .frame {
+    position: absolute;
+    inset: 48px 56px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 15px;
+    letter-spacing: 0.14em;
+    color: var(--dark);
+    font-weight: 500;
+  }
+  .top .sub { color: var(--text-3); }
+
+  .headline {
+    margin-top: 74px;
+    font-family: var(--display);
+    font-size: 92px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.0;
+    color: var(--dark);
+  }
+  .headline .accent { color: var(--teal); }
+
+  .chain {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-top: 44px;
+    font-size: 15px;
+    letter-spacing: 0.14em;
+    color: #3f4b47;
+  }
+  .chain b { color: var(--teal); font-weight: 600; margin-right: 8px; }
+  .chain .arrow { color: var(--text-3); }
+
+  .bottom {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .brand {
+    font-size: 14px;
+    letter-spacing: 0.14em;
+    color: var(--text-3);
+  }
+  .brand strong { color: var(--dark); font-weight: 600; }
+
+  /* Street-line motif, bottom right */
+  .map { display: block; }
+  .map .street { fill: none; stroke: var(--dark); stroke-width: 1.5; opacity: 0.16; }
+  .map .primary { stroke: var(--teal); stroke-width: 2.5; opacity: 0.5; }
+  .map .boundary { fill: none; stroke: var(--teal); stroke-width: 1.5; stroke-dasharray: 6 7; opacity: 0.45; }
+  .map .pt { fill: var(--teal); }
+  .map .ring { fill: none; stroke: var(--teal); stroke-width: 1.5; opacity: 0.65; }
+  .map .v { fill: #eeeeee; stroke: #6fcf97; stroke-width: 2; }
+  .map .chk { fill: none; stroke: #1e8a67; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+</style>
+</head>
+<body>
+  <div class="frame">
+    <div class="top">
+      <span>SAN ISIDRO BARANGAY · LOCAL GOVERNMENT UNIT</span>
+      <span class="sub">OFFICIAL COMMUNITY DIGITAL SERVICE</span>
+    </div>
+
+    <div class="headline">
+      COMMUNITY PROBLEMS.<br />
+      <span class="accent">SMARTER RESPONSE.</span>
+    </div>
+
+    <div class="chain">
+      <span><b>01</b>PROBLEMS</span><span class="arrow">→</span>
+      <span><b>02</b>LOCATION</span><span class="arrow">→</span>
+      <span><b>03</b>INTELLIGENCE</span><span class="arrow">→</span>
+      <span><b>04</b>ACTION</span>
+    </div>
+
+    <div class="bottom">
+      <span class="brand"><strong>AI BARANGAY</strong> PROBLEM MAPPER</span>
+      <svg class="map" width="300" height="130" viewBox="0 0 300 130" aria-hidden="true">
+        <path class="street primary" d="M -10 100 C 60 80, 110 40, 180 30 S 260 20, 310 40" />
+        <path class="street" d="M 40 140 C 90 100, 160 90, 230 60 S 290 20, 320 10" />
+        <path class="street" d="M 120 140 C 150 110, 210 100, 250 80 S 300 60, 320 50" />
+        <path class="boundary" d="M 150 34 L 226 22 L 268 52 L 258 96 L 196 108 L 158 78 Z" />
+        <circle class="pt" cx="180" cy="48" r="4" />
+        <circle class="pt" cx="238" cy="84" r="4" />
+        <circle class="ring" cx="207" cy="64" r="22" />
+        <circle class="v" cx="222" cy="42" r="8" />
+        <path class="chk" d="M 218.5 42 l 2.5 2.5 l 5 -5" />
+      </svg>
+    </div>
+  </div>
+</body>
+</html>

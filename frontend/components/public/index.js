@@ -1,5 +1,13 @@
 export { default as GovernmentHeader } from './GovernmentHeader';
 export { default as GovernmentNav } from './GovernmentNav';
+export { default as ChapterHead } from './ChapterHead';
+export { default as StoryHero } from './StoryHero';
+export { default as CommunityProblemStory } from './CommunityProblemStory';
+export { default as WhatIsSection } from './WhatIsSection';
+export { default as HowItWorksStory } from './HowItWorksStory';
+export { default as AiIntelligence } from './AiIntelligence';
+export { default as GisStory } from './GisStory';
+export { default as ReportLifecycle } from './ReportLifecycle';
 export { default as HeroSection } from './HeroSection';
 export { default as TrustBar } from './TrustBar';
 export { default as ImpactStats } from './ImpactStats';

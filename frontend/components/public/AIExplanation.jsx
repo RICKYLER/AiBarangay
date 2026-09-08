@@ -1,8 +1,8 @@
 import React from 'react';
-import { Info, Tags, Copy, Flag, LineChart } from 'lucide-react';
+import { Info, Tags, Copy, Flag, LineChart, MapPinned, MessageSquareText } from 'lucide-react';
 import { AI_CAPABILITIES } from '@/lib/data/publicData';
 
-const ICONS = { Tags, Copy, Flag, LineChart };
+const ICONS = { Tags, Copy, Flag, LineChart, MapPinned, MessageSquareText };
 
 /**
  * AIExplanation — transparent, honest description of what the AI does

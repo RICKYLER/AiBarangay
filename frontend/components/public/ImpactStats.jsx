@@ -1,51 +1,54 @@
 import React from 'react';
-import { Inbox, ShieldCheck, CheckCircle2, FileSearch, Info } from 'lucide-react';
+import { Info } from 'lucide-react';
 import { IMPACT_STATS } from '@/lib/data/publicData';
-
-const ICONS = { Inbox, ShieldCheck, CheckCircle2, FileSearch };
+import ChapterHead from './ChapterHead';
+import { Reveal } from './scroll/scrollFx';
 
 /**
- * ImpactStats — platform statistics, always labeled as sample data so
- * demonstration numbers are never mistaken for real government figures.
+ * ImpactStats — chapter 08: platform statistics as editorial rows.
+ * Each figure is set large in the display face beside a small mono
+ * label, separated by hairline rules — numbers first, chrome nowhere.
+ * Always labeled as sample data so demonstration numbers are never
+ * mistaken for real government figures.
  */
 export default function ImpactStats() {
   return (
-    <section className="pub-section" aria-labelledby="pub-stats-title">
+    <section className="pub-st-chapter stats" aria-labelledby="pub-stats-title">
       <div className="pub-container">
-        <div className="pub-section-head center">
-          <span className="pub-eyebrow">COMMUNITY IMPACT</span>
-          <h2 className="pub-section-title" id="pub-stats-title">
-            Reports turning into results
-          </h2>
-          <p className="pub-section-sub">
-            A picture of how the community and the barangay work together
-            through the platform.
-          </p>
-        </div>
+        <ChapterHead
+          index="08"
+          eyebrow="COMMUNITY IMPACT"
+          title="Reports turning into results"
+          sub="A picture of how the community and the barangay work together through the platform."
+          id="pub-stats-title"
+        />
 
-        <div className="pub-stats-grid">
-          {IMPACT_STATS.map((stat) => {
-            const Icon = ICONS[stat.icon];
-            return (
-              <div key={stat.label} className="pub-stat">
-                {Icon && (
-                  <span className="pub-stat-icon">
-                    <Icon size={18} aria-hidden="true" />
-                  </span>
-                )}
-                <span className="pub-stat-value">{stat.value}</span>
-                <span className="pub-stat-label">{stat.label}</span>
-              </div>
-            );
-          })}
-        </div>
+        <ol className="pub-stats-rows" aria-label="Platform statistics">
+          {IMPACT_STATS.map((stat, i) => (
+            <Reveal
+              as="li"
+              key={stat.label}
+              kind="up"
+              delay={i * 90}
+              className="pub-stat-row"
+            >
+              <span className="pub-stat-num">{stat.value}</span>
+              <span className="pub-stat-meta">
+                <span className="pub-stat-index" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                {stat.label}
+              </span>
+            </Reveal>
+          ))}
+        </ol>
 
-        <div style={{ textAlign: 'center' }}>
+        <Reveal kind="up">
           <span className="pub-demo-note">
             <Info size={14} aria-hidden="true" />
             Sample / Demonstration Data — illustrative figures, not official statistics.
           </span>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
