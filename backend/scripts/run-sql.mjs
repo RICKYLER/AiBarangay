@@ -1,6 +1,6 @@
 /* Run one or more SQL files against the admin database.
  * Usage (from backend/): node scripts/run-sql.mjs ../database/policies/rls.sql [more.sql …] */
-import '../src/env.js';
+import '../../frontend/server/env.js';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

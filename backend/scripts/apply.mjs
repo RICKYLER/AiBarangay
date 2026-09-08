@@ -17,7 +17,7 @@
  * After the SQL runs, app_user/bi_reader login passwords are set
  * from APP_DB_PASSWORD / BI_DB_PASSWORD.
  * ============================================================= */
-import '../src/env.js';
+import '../../frontend/server/env.js';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

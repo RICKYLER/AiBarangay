@@ -1,5 +1,5 @@
 /* Diagnostic: list all chat threads (with barangay) and recent users. */
-import '../src/env.js';
+import '../../frontend/server/env.js';
 import pg from 'pg';
 
 const client = new pg.Client({

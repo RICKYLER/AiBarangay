@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { REPORT_CATEGORIES, ZONES, TAGUM_CENTER } from '@/lib/data/residentData';
 import { createReport } from '@/lib/api/reports';
+import { compressImage } from '@/lib/imageCompress';
 import { useLookups } from '@/hooks/useLookups';
 import { ResMap, ResidentStatusBadge } from '@/components/resident';
 
@@ -107,11 +108,14 @@ export default function ResidentReportProblem() {
     ]);
   };
 
-  const onPhotoPicked = (e) => {
+  const onPhotoPicked = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    setPhotoFile(file);
-    setEvidence([{ id: 'ev-photo', type: 'photo', name: file.name }]);
+    // Big phone photos are resized/compressed in-browser first — the
+    // serverless API only accepts ~4MB bodies (see lib/imageCompress.ts).
+    const compressed = await compressImage(file);
+    setPhotoFile(compressed);
+    setEvidence([{ id: 'ev-photo', type: 'photo', name: compressed.name }]);
   };
 
   const removeEvidence = (id) =>
@@ -443,7 +447,8 @@ export default function ResidentReportProblem() {
             <h2 id="wiz-4-title" className="res-wizard-title">Add photos or videos</h2>
             <p className="res-wizard-sub">
               Photos can help barangay personnel understand the problem. This
-              step is optional.
+              step is optional. Large photos are automatically resized before
+              uploading (max 4&nbsp;MB after compression).
             </p>
 
             <input
