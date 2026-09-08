@@ -1,0 +1,3 @@
+-- users_policies.sql — users see/edit only their own row; officials see residents
+-- in their barangay; admins see all. RLS (Supabase) or column grants (plain PG).
+-- TODO: CREATE POLICY ...

@@ -1,0 +1,2 @@
+-- 16_evidence.sql — before/after evidence media for incidents and tasks.
+-- TODO: create table evidence.

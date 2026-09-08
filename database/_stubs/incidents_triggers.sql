@@ -1,0 +1,2 @@
+-- incidents_triggers.sql — updated_at, status-change notifications.
+-- TODO: CREATE TRIGGER ... ON incidents.

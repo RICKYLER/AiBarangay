@@ -1,0 +1,3 @@
+-- issue_hotspots.sql — anonymized public map markers + hotspot aggregation.
+-- Must never expose reporter identity or exact household locations.
+-- TODO: CREATE VIEW issue_hotspots AS ...

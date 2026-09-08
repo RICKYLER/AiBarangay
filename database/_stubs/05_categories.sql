@@ -1,0 +1,2 @@
+-- 05_categories.sql — problem categories (flooding, road damage, streetlight, ...).
+-- TODO: create table categories.

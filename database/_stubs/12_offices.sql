@@ -1,0 +1,2 @@
+-- 12_offices.sql — offices/departments (City Engineering, CDRRMO, ...).
+-- TODO: create table offices.

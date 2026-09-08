@@ -1,0 +1,16 @@
+[
+  {
+    "id": "cbb79b9c-12fd-4eb7-a742-4bfe9e2d6a48",
+    "fullName": "ricky coontiga",
+    "email": "rickycontiga14@gmail.com",
+    "mobile": "+63910290485",
+    "barangay": "Barangay Apokon",
+    "zone": "Zone 1",
+    "passwordHash": "f231cf9cb11627d6d0a5a4572c42fc9f:1c1662f9b7f298fca08c4a6cafa4a90f83c3d549ac985f76d6483f30dfc365ec58475ae8a6c27b18ec7fc7fdc0a6620bb7726299ad6eb384c9cd5d44f72d1111",
+    "verifyToken": null,
+    "tokenExpires": null,
+    "verified": true,
+    "createdAt": "2026-09-07T14:09:34.004Z",
+    "verifiedAt": "2026-09-07T14:09:48.486Z"
+  }
+]

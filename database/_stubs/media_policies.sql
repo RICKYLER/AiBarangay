@@ -1,0 +1,3 @@
+-- media_policies.sql — residents upload media only for their own reports;
+-- public reads media of resolved/anonymized incidents only.
+-- TODO: CREATE POLICY ...

@@ -1,0 +1,2 @@
+-- 14_tasks.sql — individual work tasks under an assignment.
+-- TODO: create table tasks.

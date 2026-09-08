@@ -1,0 +1,2 @@
+-- detect_hotspot.sql — cluster recent reports/incidents into geographic hotspots.
+-- TODO: CREATE OR REPLACE FUNCTION detect_hotspot(...).

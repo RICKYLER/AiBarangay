@@ -1,0 +1,2 @@
+-- 15_field_updates.sql — progress updates posted by field teams.
+-- TODO: create table field_updates.

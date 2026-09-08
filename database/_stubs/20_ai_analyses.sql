@@ -1,0 +1,2 @@
+-- 20_ai_analyses.sql — AI triage results per report (category, confidence, priority).
+-- TODO: create table ai_analyses.

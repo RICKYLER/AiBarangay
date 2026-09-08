@@ -1,0 +1,2 @@
+-- 05_priorities.sql — seed priority levels. Must be idempotent.
+-- TODO: INSERT ... ON CONFLICT DO NOTHING.

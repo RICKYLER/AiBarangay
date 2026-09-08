@@ -1,0 +1,3 @@
+-- incidents_policies.sql — officials/admins only; residents may read status
+-- of incidents linked to their own reports.
+-- TODO: CREATE POLICY ...

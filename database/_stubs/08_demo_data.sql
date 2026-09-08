@@ -1,0 +1,3 @@
+-- 08_demo_data.sql — demo users, reports, incidents matching the frontend mock data.
+-- Must be idempotent, and safe to skip in production.
+-- TODO: INSERT demo rows (marked is_demo = true).

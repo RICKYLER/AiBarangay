@@ -1,0 +1,2 @@
+-- 03_role_permissions.sql — seed role→permission mapping. Must be idempotent.
+-- TODO: INSERT ... ON CONFLICT DO NOTHING.

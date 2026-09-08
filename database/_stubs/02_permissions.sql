@@ -1,0 +1,2 @@
+-- 02_permissions.sql — seed permissions. Must be idempotent.
+-- TODO: INSERT ... ON CONFLICT DO NOTHING.

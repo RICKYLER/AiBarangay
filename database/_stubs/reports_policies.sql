@@ -1,0 +1,4 @@
+-- reports_policies.sql — anyone can submit; residents read only their own;
+-- officials read/act on their barangay's reports; public reads anonymized rows
+-- only via the issue_hotspots view.
+-- TODO: CREATE POLICY ...

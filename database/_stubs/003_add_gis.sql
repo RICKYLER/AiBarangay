@@ -1,0 +1,2 @@
+-- 003_add_gis.sql — PostGIS geography columns and spatial indexes (or lat/lng fallback).
+-- TODO: migration steps.

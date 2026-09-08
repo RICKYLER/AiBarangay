@@ -1,0 +1,2 @@
+-- 01_users.sql — residents, barangay personnel, admins.
+-- TODO: create table users.

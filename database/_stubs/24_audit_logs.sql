@@ -1,0 +1,2 @@
+-- 24_audit_logs.sql — immutable audit trail of privileged actions.
+-- TODO: create table audit_logs.

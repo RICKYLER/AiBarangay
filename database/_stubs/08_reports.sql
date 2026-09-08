@@ -1,0 +1,2 @@
+-- 08_reports.sql — core citizen report table.
+-- TODO: create table reports (reporter, category, description, status, priority, timestamps).

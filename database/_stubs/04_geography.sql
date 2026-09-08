@@ -1,0 +1,2 @@
+-- 04_geography.sql — barangays / zones for Tagum City and spatial columns.
+-- TODO: create tables barangays, zones; decide PostGIS vs lat/lng.

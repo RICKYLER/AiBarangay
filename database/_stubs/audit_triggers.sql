@@ -1,0 +1,2 @@
+-- audit_triggers.sql — write to audit_logs on privileged inserts/updates/deletes.
+-- TODO: CREATE TRIGGER ... ON reports, incidents, assignments, users.

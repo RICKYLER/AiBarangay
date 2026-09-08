@@ -1,0 +1,2 @@
+-- 06_statuses.sql — seed status lifecycle. Must be idempotent.
+-- TODO: INSERT ... ON CONFLICT DO NOTHING.

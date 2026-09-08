@@ -1,0 +1,2 @@
+-- 09_report_media.sql — photos/videos attached to a report.
+-- TODO: create table report_media (report_id, file ref, type, caption).

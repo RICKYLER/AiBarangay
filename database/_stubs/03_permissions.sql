@@ -1,0 +1,2 @@
+-- 03_permissions.sql — permission catalog and role_permissions join.
+-- TODO: create tables permissions, role_permissions.

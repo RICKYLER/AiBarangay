@@ -1,0 +1,3 @@
+-- locations_indexes.sql — index report_locations / zones for map viewport and radius queries
+-- (GiST if PostGIS, btree on lat/lng otherwise).
+-- TODO: CREATE INDEX ...

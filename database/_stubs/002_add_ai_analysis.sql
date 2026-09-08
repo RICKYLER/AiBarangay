@@ -1,0 +1,2 @@
+-- 002_add_ai_analysis.sql — ai_analyses, duplicate_matches, ai_insights.
+-- TODO: migration steps.

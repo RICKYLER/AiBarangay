@@ -1,0 +1,2 @@
+-- 25_system_settings.sql — key/value system configuration.
+-- TODO: create table system_settings.

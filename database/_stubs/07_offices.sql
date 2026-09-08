@@ -1,0 +1,2 @@
+-- 07_offices.sql — seed offices/departments. Must be idempotent.
+-- TODO: INSERT ... ON CONFLICT DO NOTHING.

@@ -1,0 +1,2 @@
+-- 18_feedback.sql — resident feedback/ratings after resolution.
+-- TODO: create table feedback.

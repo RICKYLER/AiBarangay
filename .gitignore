@@ -1,0 +1,21 @@
+# dependencies
+node_modules/
+
+# next build output
+.next/
+out/
+
+# secrets — NEVER commit (SMTP creds, service-role key, DB passwords)
+.env
+.env*.local
+
+# runtime artifacts
+backend/uploads/
+*.log
+
+# os / editor
+.DS_Store
+Thumbs.db
+
+# vercel
+.vercel

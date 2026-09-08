@@ -1,0 +1,2 @@
+-- 19_notifications.sql — notifications for residents and personnel.
+-- TODO: create table notifications.

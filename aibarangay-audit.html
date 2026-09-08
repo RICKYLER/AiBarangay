@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aibarangay System Audit</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --ground: #F2F5F3;
+    --surface: #FCFDFC;
+    --ink: #1E2A2B;
+    --muted: #55686A;
+    --line: #D6DEDB;
+    --teal: #0E7468;
+    --teal-soft: #DCEEEA;
+    --missing: #B3261E;
+    --missing-soft: #F7E5E2;
+    --ghost: #75817F;
+    --ghost-soft: #E9EDEC;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #131E1D;
+      --surface: #1A2625;
+      --ink: #E4EDEA;
+      --muted: #92A6A3;
+      --line: #2C3A38;
+      --teal: #45C4B2;
+      --teal-soft: #1C3330;
+      --missing: #F08A7E;
+      --missing-soft: #33201E;
+      --ghost: #61706D;
+      --ghost-soft: #202B2A;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #131E1D;
+    --surface: #1A2625;
+    --ink: #E4EDEA;
+    --muted: #92A6A3;
+    --line: #2C3A38;
+    --teal: #45C4B2;
+    --teal-soft: #1C3330;
+    --missing: #F08A7E;
+    --missing-soft: #33201E;
+    --ghost: #61706D;
+    --ghost-soft: #202B2A;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 48px 28px 72px; }
+
+  h1, h2 {
+    font-family: "Archivo", "IBM Plex Sans", sans-serif;
+    text-wrap: balance;
+    line-height: 1.15;
+  }
+  h1 { font-size: 34px; font-weight: 700; margin: 0 0 6px; letter-spacing: -0.01em; }
+  h2 { font-size: 20px; font-weight: 600; margin: 52px 0 4px; }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    color: var(--teal);
+    text-transform: uppercase;
+  }
+  .lede { color: var(--muted); max-width: 62ch; margin: 8px 0 0; }
+  .verdict {
+    margin: 22px 0 0;
+    padding: 14px 18px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--missing);
+    border-radius: 6px;
+    font-weight: 500;
+    max-width: 72ch;
+  }
+
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0 0;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+  }
+  .stats span {
+    padding: 4px 10px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .stats .bad { color: var(--missing); border-color: var(--missing); }
+
+  figure { margin: 28px 0 0; }
+  figcaption {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 10px;
+    max-width: 70ch;
+  }
+  svg { display: block; max-width: 100%; height: auto; color: var(--ink); }
+  .fig-scroll { overflow-x: auto; }
+  .fig-scroll svg { min-width: 720px; }
+
+  ol.findings { margin: 8px 0 0; padding: 0; list-style: none; counter-reset: f; }
+  ol.findings > li {
+    counter-increment: f;
+    position: relative;
+    padding: 18px 0 18px 52px;
+    border-bottom: 1px solid var(--line);
+  }
+  ol.findings > li:first-child { border-top: 1px solid var(--line); }
+  ol.findings > li::before {
+    content: counter(f, decimal-leading-zero);
+    position: absolute; left: 0; top: 20px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px; font-weight: 500;
+    color: var(--missing);
+  }
+  .findings h3 { margin: 0 0 4px; font-size: 15.5px; font-weight: 600; font-family: "IBM Plex Sans", sans-serif; }
+  .findings p { margin: 0; color: var(--muted); max-width: 68ch; }
+  code {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12.5px;
+    background: var(--teal-soft);
+    color: var(--ink);
+    padding: 1px 5px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .dead code { background: var(--ghost-soft); color: var(--muted); }
+
+  ul.plain { margin: 8px 0 0; padding-left: 20px; color: var(--muted); }
+  ul.plain li { margin: 5px 0; }
+  ul.plain code { white-space: normal; }
+
+  a { color: var(--teal); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">System analysis · AI Barangay Problem Mapper · Tagum City</p>
+    <h1>Aibarangay System Audit</h1>
+    <p class="lede">A React + Vite single-page app with three portals — a public website, a resident
+    portal, and a barangay operations console. The routing, layouts, and component libraries are
+    complete and coherent. What connects the three portals is nothing: every screen is fed by its own
+    static mock file, and no data ever leaves the browser.</p>
+    <p class="verdict">The app is a finished <em>frontend prototype</em> of a civic reporting system.
+    The core product promise — a resident reports a problem, the barangay resolves it — does not
+    function end-to-end, because there is no backend, no authentication, and no shared data.</p>
+    <div class="stats">
+      <span>33 routes</span><span>3 portals</span><span>47 components</span>
+      <span>6 data modules</span><span class="bad">0 API calls</span>
+      <span class="bad">0 auth checks</span><span class="bad">0 tests</span>
+    </div>
+  </header>
+
+  <!-- ============ FIGURE 1 — SYSTEM MAP ============ -->
+  <figure id="fig1">
+    <div class="fig-scroll">
+    <svg viewBox="0 0 1080 640" role="img" aria-label="System map: three portals each import their own static data module; a dashed red zone below marks the missing backend that should serve all three; a grey fourth column marks unrouted dead code from a first version.">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+        </marker>
+        <marker id="arm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--missing)"/>
+        </marker>
+        <marker id="arg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--ghost)"/>
+        </marker>
+      </defs>
+
+      <!-- ===== header band: one SPA ===== -->
+      <rect x="16" y="14" width="780" height="46" rx="6" fill="var(--teal-soft)" stroke="currentColor" stroke-width="1"/>
+      <text x="36" y="33" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="500" fill="var(--teal)">BROWSER · ONE REACT SPA (react-router-dom)</text>
+      <text x="36" y="50" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="var(--muted)">App.jsx · Vite build · Leaflet maps · no fetch, no context, no store</text>
+
+      <!-- ===== column titles ===== -->
+      <text x="136" y="96" text-anchor="middle" font-family="Archivo, sans-serif" font-size="13" font-weight="700" letter-spacing="0.08em" fill="currentColor">PUBLIC SITE</text>
+      <text x="406" y="96" text-anchor="middle" font-family="Archivo, sans-serif" font-size="13" font-weight="700" letter-spacing="0.08em" fill="currentColor">RESIDENT PORTAL</text>
+      <text x="676" y="96" text-anchor="middle" font-family="Archivo, sans-serif" font-size="13" font-weight="700" letter-spacing="0.08em" fill="currentColor">ADMIN PORTAL</text>
+      <text x="950" y="96" text-anchor="middle" font-family="Archivo, sans-serif" font-size="13" font-weight="700" letter-spacing="0.08em" fill="var(--ghost)">UNROUTED (DEAD)</text>
+
+      <!-- ===== portal boxes ===== -->
+      <!-- public -->
+      <rect x="16" y="110" width="240" height="112" rx="6" fill="var(--surface)" stroke="currentColor" stroke-width="1.25"/>
+      <text x="32" y="134" font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" fill="currentColor">7 routes — PublicLayout</text>
+      <text x="32" y="154" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--muted)">/ · /how-it-works</text>
+      <text x="32" y="170" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--muted)">/community-map · /about · /help</text>
+      <text x="32" y="186" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--muted)">/login · /register</text>
+      <text x="32" y="208" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--muted)">17 components in components/public/</text>
+
+      <!-- resident -->
+      <rect x="286" y="110" width="240" height="112" rx="6" fill="var(--surface)" stroke="currentColor" stroke-width="1.25"/>
+      <text x="302" y="134" font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" fill="currentColor">9 routes — ResidentLayout</text>
+      <text x="302" y="154" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--muted)">/resident/dashboard · /report</text>
+      <text x="302" y="170" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--muted)">/my-reports · /map</text>
+      <text x="302" y="186" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--muted)">/notifications · /messages · …</text>
+      <text x="302" y="208" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--muted)">5 components in components/resident/</text>
+
+      <!-- admin -->
+      <rect x="556" y="110" width="240" height="112" rx="6" fill="var(--surface)" stroke="currentColor" stroke-width="1.25"/>
+      <text x="572" y="134" font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" fill="currentColor">14 routes — BarangayLayout</text>
+      <text x="572" y="154" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--muted)">/admin/reports · /incidents</text>
+      <text x="572" y="170" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--muted)">/live-map · /ai-intel · /analytics</text>
+      <text x="572" y="186" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--muted)">/users · /zones · /audit-logs · …</text>
+      <text x="572" y="208" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--muted)">11 components in components/gov/</text>
+
+      <!-- dead code -->
+      <rect x="836" y="110" width="228" height="112" rx="6" fill="var(--ghost-soft)" stroke="var(--ghost)" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="852" y="134" font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" fill="var(--ghost)">First-version app, never routed</text>
+      <text x="852" y="154" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--ghost)">LandingPage.jsx</text>
+      <text x="852" y="170" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--ghost)">+ 12 root components:</text>
+      <text x="852" y="186" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--ghost)">Navbar, Hero, Footer, ReportModal…</text>
+      <text x="852" y="208" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--ghost)">App.jsx imports none of them</text>
+
+      <!-- ===== data modules ===== -->
+      <text x="136" y="262" text-anchor="middle" font-family="Archivo, sans-serif" font-size="11" font-weight="600" letter-spacing="0.1em" fill="var(--muted)">STATIC DATA MODULES (JS ARRAYS)</text>
+
+      <rect x="16" y="276" width="240" height="92" rx="6" fill="var(--surface)" stroke="currentColor" stroke-width="1.25"/>
+      <text x="32" y="300" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="500" fill="var(--teal)">publicData.js</text>
+      <text x="32" y="318" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--muted)">MAP_MARKERS, MAP_FILTERS,</text>
+      <text x="32" y="333" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--muted)">PUBLIC_CONFIG, announcements</text>
+      <text x="32" y="355" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--muted)">feeds the public map</text>
+
+      <rect x="286" y="276" width="240" height="92" rx="6" fill="var(--surface)" stroke="currentColor" stroke-width="1.25"/>
+      <text x="302" y="300" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="500" fill="var(--teal)">residentData.js</text>
+      <text x="302" y="318" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--muted)">MY_REPORTS, RESIDENT,</text>
+      <text x="302" y="333" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--muted)">NOTIFICATIONS, CATEGORIES</text>
+      <text x="302" y="355" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--muted)">feeds "my" reports</text>
+
+      <rect x="556" y="276" width="240" height="92" rx="6" fill="var(--surface)" stroke="currentColor" stroke-width="1.25"/>
+      <text x="572" y="300" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="500" fill="var(--teal)">adminData.js</text>
+      <text x="572" y="318" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--muted)">REPORTS, INCIDENTS, ZONES,</text>
+      <text x="572" y="333" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--muted)">HOTSPOTS, AUDIT_LOGS</text>
+      <text x="572" y="355" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--muted)">feeds the ops console</text>
+
+      <rect x="836" y="276" width="228" height="92" rx="6" fill="var(--ghost-soft)" stroke="var(--ghost)" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="852" y="300" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="500" fill="var(--ghost)">mockProblems.js</text>
+      <text x="852" y="318" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--ghost)">INITIAL_PROBLEMS</text>
+      <text x="852" y="339" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--ghost)">imported only by the dead</text>
+      <text x="852" y="354" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--ghost)">LandingPage — never rendered</text>
+
+      <!-- import arrows -->
+      <line x1="136" y1="222" x2="136" y2="274" stroke="currentColor" stroke-width="1.25" marker-end="url(#ar)"/>
+      <text x="146" y="252" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--muted)">static import</text>
+
+      <line x1="406" y1="222" x2="406" y2="274" stroke="currentColor" stroke-width="1.25" marker-end="url(#ar)"/>
+      <text x="416" y="252" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--muted)">static import</text>
+
+      <line x1="676" y1="222" x2="676" y2="274" stroke="currentColor" stroke-width="1.25" marker-end="url(#ar)"/>
+      <text x="686" y="252" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--muted)">static import</text>
+
+      <line x1="950" y1="222" x2="950" y2="274" stroke="var(--ghost)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arg)"/>
+      <text x="960" y="252" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--ghost)">dead import</text>
+
+      <!-- ===== MISSING BACKEND ===== -->
+      <rect x="16" y="428" width="780" height="128" rx="8" fill="var(--missing-soft)" stroke="var(--missing)" stroke-width="1.5" stroke-dasharray="7 5"/>
+      <text x="36" y="458" font-family="Archivo, sans-serif" font-size="14" font-weight="700" letter-spacing="0.06em" fill="var(--missing)">MISSING — NO BACKEND EXISTS</text>
+      <text x="36" y="482" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="var(--muted)">API server · reports database · auth + sessions · image storage</text>
+      <text x="36" y="501" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="var(--muted)">AI triage service · push/SMS notifications · audit log writer</text>
+      <text x="36" y="532" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="var(--muted)">Everything a real deployment needs — nothing in this repo provides any of it.</text>
+
+      <!-- red arrows data -> backend -->
+      <line x1="136" y1="368" x2="136" y2="426" stroke="var(--missing)" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#arm)"/>
+      <text x="146" y="402" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--missing)">should be served by</text>
+
+      <line x1="406" y1="368" x2="406" y2="426" stroke="var(--missing)" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#arm)"/>
+      <text x="416" y="402" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--missing)">should be served by</text>
+
+      <line x1="676" y1="368" x2="676" y2="426" stroke="var(--missing)" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#arm)"/>
+      <text x="686" y="402" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--missing)">should be served by</text>
+
+      <!-- red arrow: resident submit never reaches admin -->
+      <path d="M 526 322 C 545 322, 537 296, 554 296" fill="none" stroke="var(--missing)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arm)"/>
+      <text x="540" y="271" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10.5" font-weight="600" fill="var(--missing)">new report</text>
+      <text x="540" y="284" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10.5" font-weight="600" fill="var(--missing)">never arrives</text>
+
+      <!-- footnote inside svg -->
+      <text x="16" y="596" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="var(--muted)">Dashed red = a connection the product needs but does not have. The three data modules are three</text>
+      <text x="16" y="612" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="var(--muted)">separate hand-written datasets — the public map, resident "my reports", and admin console disagree.</text>
+    </svg>
+    </div>
+    <figcaption><strong>Figure 1 — System map.</strong> One SPA serves three portals, but each portal
+    reads only its own static JS array. No fetch, no context, no store connects them: a report
+    submitted in the resident portal cannot appear in the admin console because both read different
+    hard-coded files. The grey column is a complete earlier landing page that App.jsx never routes.</figcaption>
+  </figure>
+
+  <!-- ============ FIGURE 2 — BROKEN PIPELINE ============ -->
+  <figure id="fig2">
+    <div class="fig-scroll">
+    <svg viewBox="0 0 1080 210" role="img" aria-label="The report pipeline: only the first stage, the resident wizard, is built; persistence, AI triage, admin review, field ops, and status updates back to the resident are all missing, and the chain breaks right after submission.">
+      <defs>
+        <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+        </marker>
+        <marker id="arm2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--missing)"/>
+        </marker>
+      </defs>
+
+      <text x="16" y="28" font-family="Archivo, sans-serif" font-size="11" font-weight="600" letter-spacing="0.1em" fill="var(--muted)">THE INTENDED CIVIC LOOP — WHERE IT BREAKS</text>
+
+      <!-- stage 1: built -->
+      <rect x="16" y="46" width="176" height="104" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.5"/>
+      <text x="32" y="72" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="600" fill="currentColor">1 · Resident submits</text>
+      <text x="32" y="92" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--muted)">5-step wizard: category,</text>
+      <text x="32" y="107" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--muted)">details, map pin, evidence</text>
+      <text x="32" y="134" font-family="IBM Plex Mono, monospace" font-size="10" font-weight="500" fill="var(--teal)">BUILT — in the browser</text>
+
+      <!-- stages 2-5: missing -->
+      <rect x="240" y="46" width="176" height="104" rx="6" fill="var(--surface)" stroke="var(--missing)" stroke-width="1" stroke-dasharray="5 4"/>
+      <text x="256" y="72" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="600" fill="currentColor">2 · Saved + AI-triaged</text>
+      <text x="256" y="92" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--muted)">persist report, classify,</text>
+      <text x="256" y="107" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--muted)">score priority &amp; duplicates</text>
+      <text x="256" y="134" font-family="IBM Plex Mono, monospace" font-size="10" font-weight="500" fill="var(--missing)">MISSING</text>
+
+      <rect x="464" y="46" width="176" height="104" rx="6" fill="var(--surface)" stroke="var(--missing)" stroke-width="1" stroke-dasharray="5 4"/>
+      <text x="480" y="72" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="600" fill="currentColor">3 · Barangay reviews</text>
+      <text x="480" y="92" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--muted)">queue, verify, assign</text>
+      <text x="480" y="107" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--muted)">to zones &amp; field teams</text>
+      <text x="480" y="134" font-family="IBM Plex Mono, monospace" font-size="10" font-weight="500" fill="var(--missing)">MISSING</text>
+
+      <rect x="688" y="46" width="176" height="104" rx="6" fill="var(--surface)" stroke="var(--missing)" stroke-width="1" stroke-dasharray="5 4"/>
+      <text x="704" y="72" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="600" fill="currentColor">4 · Field ops resolve</text>
+      <text x="704" y="92" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--muted)">crew dispatch, work done,</text>
+      <text x="704" y="107" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--muted)">photo verification</text>
+      <text x="704" y="134" font-family="IBM Plex Mono, monospace" font-size="10" font-weight="500" fill="var(--missing)">MISSING</text>
+
+      <rect x="912" y="46" width="152" height="104" rx="6" fill="var(--surface)" stroke="var(--missing)" stroke-width="1" stroke-dasharray="5 4"/>
+      <text x="928" y="72" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="600" fill="currentColor">5 · Status back</text>
+      <text x="928" y="92" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--muted)">timeline, updates &amp;</text>
+      <text x="928" y="107" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--muted)">notifications to resident</text>
+      <text x="928" y="134" font-family="IBM Plex Mono, monospace" font-size="10" font-weight="500" fill="var(--missing)">MISSING</text>
+
+      <!-- break arrow -->
+      <line x1="192" y1="98" x2="238" y2="98" stroke="var(--missing)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arm2)"/>
+      <text x="215" y="86" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" font-weight="600" fill="var(--missing)">breaks here</text>
+
+      <line x1="416" y1="98" x2="462" y2="98" stroke="var(--ghost)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#ar2)"/>
+      <line x1="640" y1="98" x2="686" y2="98" stroke="var(--ghost)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#ar2)"/>
+      <line x1="864" y1="98" x2="910" y2="98" stroke="var(--ghost)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#ar2)"/>
+
+      <text x="16" y="184" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="var(--muted)">Stages 3–5 have polished UI already built — but they display hard-coded rows, so they can never react to a real submission.</text>
+    </svg>
+    </div>
+    <figcaption><strong>Figure 2 — The report pipeline.</strong> Only stage 1 exists as working code:
+    <code>ResidentReportProblem.jsx:103</code> just flips a local flag and shows a success screen.
+    The reference number it displays is generated against a static list, so nothing downstream —
+    including the barangay console — ever learns the report happened.</figcaption>
+  </figure>
+
+  <!-- ============ FINDINGS ============ -->
+  <h2>What is missing</h2>
+  <ol class="findings">
+    <li>
+      <h3>No backend, no persistence — nothing leaves the browser</h3>
+      <p>A search of the whole <code>src/</code> tree finds zero <code>fetch</code>/<code>axios</code>
+      calls, no React Context, no store, and no localStorage for reports (the only localStorage use
+      is remembering sidebar collapse in the two layouts). Every list on every page — reports,
+      incidents, notifications, messages, analytics — is a hand-written array in
+      <code>src/data/*.js</code>. Upvotes, status changes, and new reports vanish on refresh.</p>
+    </li>
+    <li>
+      <h3>Authentication is cosmetic</h3>
+      <p><code>LoginPage.jsx:25-39</code> accepts any syntactically valid email plus any password,
+      shows a "Sign-in accepted (demo)" notice, and navigates by tab choice. There are no route
+      guards: typing <code>/admin/audit-logs</code> or <code>/resident/messages</code> as an
+      anonymous visitor works. The register page collects a full profile and discards it.</p>
+    </li>
+    <li>
+      <h3>The core loop — report → review → resolve → notify — is disconnected</h3>
+      <p>Submit in <code>ResidentReportProblem.jsx</code> only sets a "submitted" flag.
+      <code>residentData.js MY_REPORTS</code> and <code>adminData.js REPORTS</code> are unrelated
+      arrays that merely share demo content, and the public map reads a third
+      (<code>publicData.js MAP_MARKERS</code>). The barangay never sees a new report; the admin
+      review decision in <code>BarangayReviewReport.jsx:19-22</code> also only sets local state
+      before navigating away. Four places render "the same" incidents from four datasets.</p>
+    </li>
+    <li class="dead">
+      <h3>An entire first version of the app is dead code</h3>
+      <p><code>App.jsx</code> never routes to <code>pages/LandingPage.jsx</code>, so it and the
+      twelve root-level components it pulls in — <code>Navbar</code>, <code>Hero</code>,
+      <code>Footer</code>, <code>HowItWorks</code>, <code>CommunityProblems</code>,
+      <code>CommunityMapPreview</code>, <code>AiGisSection</code>,
+      <code>TransparencySection</code>, <code>CtaSection</code>, <code>TrustImpact</code>,
+      <code>ReportModal</code>, <code>HelpModal</code>, <code>AuthModals</code> — plus
+      <code>mockProblems.js</code> are unreachable. <code>portalData.js</code> appears to have no
+      importers either (verify before deleting). That is roughly a quarter of the component tree
+      shipped in every build.</p>
+    </li>
+    <li>
+      <h3>Duplicated concepts instead of shared ones</h3>
+      <p>Two different <code>CommunityMapPreview</code> components exist
+      (<code>components/</code> and <code>components/public/</code>); <code>CtaSection</code> vs
+      <code>CTASection</code>; three map components (<code>MapMockup</code>, <code>ResMap</code>,
+      <code>GisMap</code>) each re-wrap the same Leaflet setup; <code>CommunityMapPage</code> and
+      <code>ResidentMap</code> are near copies. Nothing is shared across portals because there is
+      no shared layer to put it in.</p>
+    </li>
+    <li>
+      <h3>Smaller gaps</h3>
+      <p>No tests of any kind; no error boundary; resident messages and notifications are static
+      with no send path; evidence "upload" only pushes a filename into local state
+      (<code>ResidentReportProblem.jsx:70-81</code>) — no file is read or attached; demo images are
+      hotlinked from Unsplash; the "AI" confidence/duplicate scores everywhere are hard-coded
+      numbers, not a model.</p>
+    </li>
+  </ol>
+
+  <h2>What is genuinely built well</h2>
+  <ul class="plain">
+    <li>Routing is complete and tidy — all 33 routes across three layouts in <code>App.jsx</code>, with redirects and a detail route (<code>/admin/reports/review/:id</code>).</li>
+    <li>Three coherent design systems (public, resident teal, gov console) with per-portal CSS and barrel <code>index.js</code> exports.</li>
+    <li>Real Tagum City geography: Leaflet maps with actual coordinates and a <code>tagumBarangays.js</code> dataset.</li>
+    <li>Consistent accessibility attention — skip links, <code>aria-label</code>s, <code>aria-current</code> on wizard steps, focus states, reduced-motion in the scroll effects.</li>
+    <li>The 5-step report wizard has real client-side validation, geolocation pinning, and a guided UX that would survive being pointed at a real API.</li>
+  </ul>
+
+  <h2>Suggested build order</h2>
+  <ul class="plain">
+    <li><strong>Stand up an API + database for reports</strong> (Supabase or Express + Postgres fits this stack), and replace the arrays in <code>adminData.js</code>/<code>residentData.js</code> with fetches — one source of truth makes stages 3–5 live immediately.</li>
+    <li><strong>Add real auth with route guards</strong> in the resident and admin layouts (Supabase Auth or JWT; protect <code>/admin/*</code> by role).</li>
+    <li><strong>Wire the wizard's submit to a POST</strong> and the reference number to the server response; show it in <code>My Reports</code> from the DB.</li>
+    <li><strong>Make admin actions mutations</strong> — review decisions, assignments, and status changes write back and notify the resident.</li>
+    <li><strong>Delete the dead column</strong> — LandingPage, the twelve root components, <code>mockProblems.js</code>, and (after checking) <code>portalData.js</code> — then deduplicate the map components.</li>
+  </ul>
+
+</div>
+</body>
+</html>

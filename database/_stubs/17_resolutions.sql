@@ -1,0 +1,2 @@
+-- 17_resolutions.sql — how and when an incident was resolved.
+-- TODO: create table resolutions.

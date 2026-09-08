@@ -1,0 +1,2 @@
+-- 21_duplicate_matches.sql — detected duplicate/near-duplicate report pairs.
+-- TODO: create table duplicate_matches.

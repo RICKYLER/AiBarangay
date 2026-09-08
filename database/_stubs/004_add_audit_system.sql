@@ -1,0 +1,2 @@
+-- 004_add_audit_system.sql — audit_logs table plus audit triggers on privileged tables.
+-- TODO: migration steps.

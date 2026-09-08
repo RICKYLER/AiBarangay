@@ -1,0 +1,2 @@
+-- 11_incidents.sql — verified incidents the barangay operates on.
+-- TODO: create table incidents (linked to one or more reports).

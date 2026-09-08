@@ -1,0 +1,5 @@
+-- 001_initial_schema.sql — baseline: users, roles, permissions, geography,
+-- categories, priorities, statuses, reports, media, locations, incidents,
+-- offices, assignments, tasks, field updates, evidence, resolutions, feedback,
+-- notifications, system settings.
+-- TODO: migration steps.

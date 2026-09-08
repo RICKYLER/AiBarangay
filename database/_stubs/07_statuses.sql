@@ -1,0 +1,2 @@
+-- 07_statuses.sql — report/incident status lifecycle (Submitted → ... → Resolved).
+-- TODO: create table statuses.

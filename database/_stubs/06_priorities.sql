@@ -1,0 +1,2 @@
+-- 06_priorities.sql — priority levels (LOW, MEDIUM, HIGH, CRITICAL).
+-- TODO: create table priorities.

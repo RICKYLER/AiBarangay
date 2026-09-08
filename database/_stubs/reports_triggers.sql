@@ -1,0 +1,2 @@
+-- reports_triggers.sql — updated_at maintenance, report numbering, priority recalc.
+-- TODO: CREATE TRIGGER ... ON reports.

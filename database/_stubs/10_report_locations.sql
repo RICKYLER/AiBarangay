@@ -1,0 +1,2 @@
+-- 10_report_locations.sql — pinned location(s) for each report.
+-- TODO: create table report_locations (report_id, lat/lng or geography, landmark text).

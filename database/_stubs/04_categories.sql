@@ -1,0 +1,2 @@
+-- 04_categories.sql — seed problem categories. Must be idempotent.
+-- TODO: INSERT ... ON CONFLICT DO NOTHING.

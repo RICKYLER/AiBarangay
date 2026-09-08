@@ -1,0 +1,2 @@
+-- 23_analytics.sql — pre-aggregated analytics rows for dashboards.
+-- TODO: create table analytics (period, category, zone, counts).

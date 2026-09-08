@@ -1,0 +1,2 @@
+-- 22_ai_insights.sql — aggregated AI insights (hotspots, trends) for the admin console.
+-- TODO: create table ai_insights.

@@ -1,0 +1,2 @@
+-- 02_roles.sql — role lookup table (resident, official, admin, ...).
+-- TODO: create table roles.

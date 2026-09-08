@@ -1,0 +1,3 @@
+-- calculate_distance.sql — distance in meters between two lat/lng points
+-- (haversine; plain Postgres fallback if PostGIS is unavailable).
+-- TODO: CREATE OR REPLACE FUNCTION calculate_distance(lat1, lng1, lat2, lng2).
