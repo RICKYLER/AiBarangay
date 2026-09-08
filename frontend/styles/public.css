@@ -404,14 +404,40 @@ body:has(.pub-app) {
 }
 
 /* ------------------------------------------------------------
-   5. MAIN NAVIGATION
+   5. MAIN NAVIGATION — transparent at rest, solid once scrolled,
+      auto-hides on scroll-down and returns on scroll-up
    ------------------------------------------------------------ */
 .pub-nav {
   position: sticky;
   top: 0;
   z-index: 1000;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition:
+    transform 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    visibility 0s;
+}
+
+/* Scrolled — a quiet white bar with a hairline and a soft lift */
+.pub-nav.scrolled {
   background: var(--pub-surface);
-  border-bottom: 1px solid var(--pub-border);
+  border-bottom-color: var(--pub-border);
+  box-shadow: 0 1px 0 rgba(14, 76, 65, 0.02), 0 10px 30px rgba(16, 44, 38, 0.07);
+}
+
+/* Hidden — slid out of view while the visitor reads on */
+.pub-nav.nav-hidden {
+  transform: translateY(-100%);
+  visibility: hidden;
+  transition:
+    transform 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    visibility 0s 0.32s;
 }
 
 .pub-nav-inner {
@@ -420,6 +446,12 @@ body:has(.pub-app) {
   justify-content: space-between;
   gap: 20px;
   min-height: 68px;
+  transition: min-height 0.25s ease;
+}
+
+/* The bar breathes in slightly once it turns solid */
+.pub-nav.scrolled .pub-nav-inner {
+  min-height: 62px;
 }
 
 /* Brand block */
@@ -440,6 +472,12 @@ body:has(.pub-app) {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: width 0.25s ease, height 0.25s ease;
+}
+
+.pub-nav.scrolled .pub-brand-mark {
+  width: 38px;
+  height: 38px;
 }
 
 .pub-brand-text {
@@ -3181,17 +3219,6 @@ body:has(.pub-app) {
   to { opacity: 1; transform: none; }
 }
 
-/* The navbar settles in first, ahead of the hero stagger */
-@keyframes pub-nav-in {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: none; }
-}
-
-.pub-nav,
-.pub-infobar {
-  animation: pub-nav-in 0.55s ease 0.05s both;
-}
-
 /* Scroll cue */
 .pub-st-hero-cue {
   position: absolute;
@@ -4488,9 +4515,9 @@ body:has(.pub-app) {
     opacity: 1 !important;
   }
 
-  .pub-nav,
-  .pub-infobar {
-    animation: none !important;
+  /* The nav still hides/shows, but without motion */
+  .pub-nav {
+    transition: none !important;
   }
 
   .pub-st-hero-bg,

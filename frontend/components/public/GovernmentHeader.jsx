@@ -14,18 +14,60 @@ import { useAuth, homeForRole } from '@/hooks/useAuth';
  * GovernmentHeader — thin institutional information bar above the main
  * public navigation. The LGU identity is read from PUBLIC_CONFIG so a
  * deployment can re-brand the site without touching components.
+ *
+ * The nav is an auto-hiding sticky bar: transparent at the top of the
+ * page, solid (white surface + hairline) once scrolled, hidden while
+ * scrolling down and back within reach while scrolling up. The info
+ * bar stays in normal flow and scrolls away naturally.
  */
 export default function GovernmentHeader() {
   const { pathname } = useLocation();
   const { user } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [navState, setNavState] = useState({ scrolled: false, hidden: false });
 
   /* Close the mobile menu on navigation */
   React.useEffect(() => setMenuOpen(false), [pathname]);
 
+  /* Auto-hide scroll logic — rAF-throttled, passive */
+  React.useEffect(() => {
+    let lastY = window.scrollY;
+    let ticking = false;
+
+    const update = () => {
+      ticking = false;
+      const y = window.scrollY;
+      const delta = y - lastY;
+      lastY = y;
+      setNavState((prev) => {
+        const scrolled = y > 12;
+        let hidden = prev.hidden;
+        if (delta > 4 && y > 160) hidden = true;
+        else if (delta < -4) hidden = false;
+        if (prev.scrolled === scrolled && prev.hidden === hidden) return prev;
+        return { scrolled, hidden };
+      });
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    update(); /* sync state if the page restored a scroll position */
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [pathname]);
+
+  /* With the mobile menu open the bar must stay visible and solid */
+  const solid = navState.scrolled || menuOpen;
+  const hidden = navState.hidden && !menuOpen;
+
   return (
-    <header>
-      {/* ---- Top information bar ---- */}
+    <>
+      {/* ---- Top information bar (scrolls away) ---- */}
       <div className="pub-infobar" role="note">
         <div className="pub-container pub-infobar-inner">
           <div className="pub-infobar-left">
@@ -62,8 +104,8 @@ export default function GovernmentHeader() {
         </div>
       </div>
 
-      {/* ---- Main navigation ---- */}
-      <div className="pub-nav">
+      {/* ---- Main navigation (sticky, auto-hiding) ---- */}
+      <header className={`pub-nav${solid ? ' scrolled' : ''}${hidden ? ' nav-hidden' : ''}`}>
         <div className="pub-container pub-nav-inner">
           <Link to="/" className="pub-brand" aria-label={`${PUBLIC_CONFIG.siteName} — home`}>
             <span className="pub-brand-mark" aria-hidden="true">
@@ -138,7 +180,7 @@ export default function GovernmentHeader() {
             </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </>
   );
 }
