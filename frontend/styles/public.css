@@ -48,7 +48,7 @@
 
   /* Ink */
   --pub-text: #0e4c41;
-  --pub-text-2: #5c6862;
+  --pub-text-2: #718179;
   --pub-text-3: #8a948c;
 
   /* Geometry & motion */
@@ -75,7 +75,14 @@
 }
 
 body:has(.pub-app) {
-  background: #f7f6ed;
+  background-color: #f7f6ed;
+  background-image: none;
+}
+
+/* Keep overscroll (rubber-band) ivory too — globals.css paints html dark
+   for the portal; the public site must never flash #070a12. */
+html:has(.pub-app) {
+  background-color: #f7f6ed;
 }
 
 /* Zero browser-default styling inside the public shell */
@@ -163,7 +170,7 @@ body:has(.pub-app) {
 }
 
 .pub-section.alt {
-  background: var(--pub-sage);
+  background: var(--pub-surface);
   border-top: 1px solid var(--pub-divider);
   border-bottom: 1px solid var(--pub-divider);
 }
@@ -823,44 +830,70 @@ body:has(.pub-app) {
    8. TRUST BAR
    ------------------------------------------------------------ */
 .pub-trustbar {
-  background: var(--pub-dark);
-  color: #ffffff;
+  background: var(--pub-surface);
+  background-image: none;
+  color: var(--pub-text);
+  border-top: 1px solid var(--pub-border);
+  border-bottom: 1px solid var(--pub-border);
 }
 
 .pub-trustbar-inner {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  background: rgba(255, 255, 255, 0.1);
+  align-items: stretch;
 }
 
 .pub-trust-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 22px 22px;
-  background: var(--pub-dark);
+  padding: 30px 28px 28px;
+  border-left: 1px solid var(--pub-border);
 }
 
-.pub-trust-item svg {
-  color: var(--pub-green);
-  flex-shrink: 0;
-  margin-top: 2px;
+/* Flush edges on the 4-up row: the first and last items align with the
+   page grid, so the hairline rules read as dividers between — not a box.
+   Scoped to desktop; the 2×2 and stacked layouts use uniform padding. */
+@media (min-width: 1025px) {
+  .pub-trust-item:first-child {
+    padding-left: 0;
+    border-left: none;
+  }
+
+  .pub-trust-item:last-child {
+    padding-right: 0;
+  }
+}
+
+.pub-trust-icon {
+  display: block;
+  color: var(--pub-teal);
+  margin-bottom: 14px;
+}
+
+.pub-trust-icon svg {
+  display: block;
 }
 
 .pub-trust-title {
+  font-family: var(--pub-font-display);
   font-size: 11.5px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  color: #ffffff;
-  line-height: 1.35;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--pub-dark);
+  line-height: 1.4;
 }
 
 .pub-trust-text {
   font-size: 12.5px;
-  color: rgba(255, 255, 255, 0.72);
-  margin-top: 3px;
-  line-height: 1.45;
+  color: var(--pub-text-2);
+  margin-top: 7px;
+  line-height: 1.55;
+}
+
+/* Scroll reveal — scoped restatement of the zoom motion so this strip
+   uses a slightly tighter 12px / 0.98 travel (see 24.1 for the base).
+   :not(.in) keeps it in the pre-reveal state only, so the shared
+   `.pub-sx-r.in { transform: none }` still applies once revealed. */
+.pub-trustbar .pub-trust-item.pub-sx-r:not(.in) {
+  transform: translateY(12px) scale(0.98);
 }
 
 /* ------------------------------------------------------------
@@ -1845,92 +1878,56 @@ body:has(.pub-app) {
 }
 
 .pub-footer-main {
-  display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
-  gap: 32px;
-  padding: 52px 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  padding: 14px 0;
 }
 
 .pub-footer-brand {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 14px;
+  gap: 10px;
 }
 
 .pub-footer-brand .pub-brand-mark {
-  width: 38px;
-  height: 38px;
+  width: 28px;
+  height: 28px;
 }
 
 .pub-footer-name {
-  font-size: 15px;
+  font-size: 13.5px;
   font-weight: 800;
   color: #ffffff;
   line-height: 1.3;
 }
 
-.pub-footer-tagline {
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.68);
-  line-height: 1.65;
-  max-width: 300px;
-}
-
-.pub-footer-heading {
-  font-size: 11.5px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  color: #ffffff;
-  margin-bottom: 14px;
-}
-
 .pub-footer-links {
   display: flex;
-  flex-direction: column;
-  gap: 9px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2px;
 }
 
 .pub-footer-link {
-  font-size: 13.5px;
+  font-size: 12.5px;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.72);
-  transition: color var(--pub-speed);
+  padding: 3px 9px;
+  border-radius: 6px;
+  transition: background var(--pub-speed), color var(--pub-speed);
 }
 
 .pub-footer-link:hover {
+  background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
-}
-
-.pub-footer-contact {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.pub-footer-contact-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 9px;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.72);
-  line-height: 1.5;
-}
-
-.pub-footer-contact-item svg {
-  color: var(--pub-green);
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-
-.pub-footer-contact-item strong {
-  color: rgba(255, 255, 255, 0.9);
-  font-weight: 700;
 }
 
 .pub-footer-bottom {
   border-top: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 18px 0;
+  padding: 10px 0;
 }
 
 .pub-footer-bottom-inner {
@@ -1939,27 +1936,16 @@ body:has(.pub-app) {
   justify-content: space-between;
   gap: 12px;
   flex-wrap: wrap;
-  font-size: 12.5px;
+  font-size: 12px;
   color: rgba(255, 255, 255, 0.6);
 }
 
-.pub-footer-legal {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  flex-wrap: wrap;
-}
-
-.pub-footer-legal a {
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-weight: 600;
+.pub-footer-bottom-inner a {
   color: rgba(255, 255, 255, 0.7);
-  transition: background var(--pub-speed), color var(--pub-speed);
+  transition: color var(--pub-speed);
 }
 
-.pub-footer-legal a:hover {
-  background: rgba(255, 255, 255, 0.1);
+.pub-footer-bottom-inner a:hover {
   color: #ffffff;
 }
 
@@ -2477,6 +2463,21 @@ body:has(.pub-app) {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  /* 2×2 — vertical rule between column pairs, horizontal rule between rows */
+  .pub-trust-item {
+    padding: 26px 24px;
+    border-left: none;
+    border-top: 1px solid var(--pub-border);
+  }
+
+  .pub-trust-item:nth-child(even) {
+    border-left: 1px solid var(--pub-border);
+  }
+
+  .pub-trust-item:nth-child(-n + 2) {
+    border-top: none;
+  }
+
   .pub-cat-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -2501,11 +2502,6 @@ body:has(.pub-app) {
 
   .pub-road-item:nth-child(even) {
     margin-top: 44px;
-  }
-
-  .pub-footer-main {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 28px;
   }
 }
 
@@ -2601,6 +2597,21 @@ body:has(.pub-app) {
     grid-template-columns: 1fr;
   }
 
+  /* Stacked — horizontal hairlines between items, flush with the grid.
+     :nth-child(n) matches the tablet rules' specificity so the vertical
+     dividers and row borders are fully cleared here. */
+  .pub-trust-item:nth-child(n),
+  .pub-trust-item:first-child {
+    padding: 20px 0;
+    border-left: none;
+    border-top: 1px solid var(--pub-border);
+  }
+
+  .pub-trust-item:first-child {
+    padding-top: 26px;
+    border-top: none;
+  }
+
   .pub-emergency-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -2652,9 +2663,8 @@ body:has(.pub-app) {
   }
 
   .pub-footer-main {
-    grid-template-columns: 1fr;
-    gap: 26px;
-    padding: 40px 0 32px;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .pub-footer-bottom-inner {
@@ -2722,6 +2732,7 @@ body:has(.pub-app) {
    ------------------------------------------------------------ */
 .pub-st-chapter {
   position: relative;
+  background: var(--pub-bg);
   padding: clamp(96px, 12vw, 150px) 0;
 }
 
@@ -2729,6 +2740,12 @@ body:has(.pub-app) {
   background: var(--pub-surface);
   border-top: 1px solid var(--pub-divider);
   border-bottom: 1px solid var(--pub-divider);
+}
+
+.pub-st-chapter.stats {
+  background: var(--pub-surface);
+  border-top: 1px solid var(--pub-border);
+  border-bottom: 1px solid var(--pub-border);
 }
 
 /* Chapter head — index, drawing rule, eyebrow, large title */
@@ -3124,10 +3141,12 @@ body:has(.pub-app) {
 
 .pub-st-hero-inner {
   position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.02fr);
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
   gap: clamp(40px, 5vw, 72px);
+  max-width: 1160px;
 }
 
 /* The message drifts up a touch slower than the scroll */
@@ -3174,6 +3193,10 @@ body:has(.pub-app) {
   display: block;
 }
 
+.pub-st-hero-line.headline-main {
+  white-space: nowrap;
+}
+
 .pub-st-hero-line.accent {
   color: var(--pub-teal);
 }
@@ -3205,6 +3228,97 @@ body:has(.pub-app) {
 
 .pub-st-hero-trust svg {
   color: var(--pub-green-deep);
+}
+
+/* Editorial home hero: keep the message anchored to the left edge of the
+   content grid instead of centering the composition. */
+.pub-st-hero {
+  min-height: calc(100vh - 92px);
+  padding: 76px 0 86px;
+  background: var(--pub-bg);
+}
+
+.pub-st-hero-inner {
+  width: 100%;
+  align-self: stretch;
+}
+
+.pub-st-hero-copy {
+  width: min(900px, 100%);
+}
+
+.pub-hero-eyebrow {
+  flex-direction: row;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 14px;
+  border: 1px solid var(--pub-border-strong);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.62);
+  box-shadow: var(--pub-shadow);
+  width: fit-content;
+  color: var(--pub-dark);
+}
+
+.pub-hero-eyebrow-dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  border-radius: 50%;
+  background: var(--pub-teal);
+}
+
+.pub-st-hero-title {
+  max-width: 920px;
+  margin-top: 38px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(64px, 9.3vw, 132px);
+  font-weight: 700;
+  letter-spacing: -0.065em;
+  line-height: 0.91;
+}
+
+.pub-st-hero-line.accent {
+  font-style: italic;
+  font-weight: 400;
+}
+
+.pub-hero-support {
+  max-width: 730px;
+  margin-top: 44px;
+  font-size: clamp(17px, 1.65vw, 22px);
+  line-height: 1.62;
+}
+
+.pub-st-hero-actions {
+  margin-top: 38px;
+}
+
+.pub-st-hero-trust {
+  margin-top: 28px;
+  font-weight: 400;
+}
+
+@media (max-width: 640px) {
+  .pub-st-hero {
+    min-height: calc(100vh - 64px);
+    padding: 58px 0 72px;
+  }
+
+  .pub-st-hero-title {
+    margin-top: 30px;
+    font-size: clamp(56px, 17vw, 92px);
+  }
+
+  .pub-hero-support {
+    margin-top: 34px;
+    font-size: 17px;
+  }
+
+  .pub-st-hero-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
 }
 
 /* Entrance — one calm staggered rise on load */

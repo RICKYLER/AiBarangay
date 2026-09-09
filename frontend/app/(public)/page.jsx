@@ -2,7 +2,7 @@ import React from 'react';
 import {
   StoryHero, TrustBar,
   CommunityProblemStory, WhatIsSection, HowItWorksStory,
-  AiIntelligence, GisStory, ReportLifecycle, TransparencyTimeline,
+  AiIntelligence,
   ImpactStats, CommunityImpact, PrivacySection,
   Announcements, EmergencyContacts, CTASection,
 } from '@/components/public';
@@ -12,9 +12,8 @@ import {
  *
  * The visitor discovers the system progressively while scrolling:
  * the hero promise → the community problem → what the platform is →
- * how it works (7 steps) → AI intelligence → the GIS map → the report
- * lifecycle (scroll-synchronized) → transparency roadmap → community
- * impact → privacy & trust → public services → final call to action.
+ * how it works (7 steps) → AI intelligence → community impact → privacy
+ * & trust → public services → final call to action.
  *
  * Information, trust, transparency, and public services only; no
  * administrator functions, no private data.
@@ -28,9 +27,6 @@ export default function HomePage() {
       <WhatIsSection />
       <HowItWorksStory />
       <AiIntelligence />
-      <GisStory />
-      <ReportLifecycle />
-      <TransparencyTimeline />
       <ImpactStats />
       <CommunityImpact />
       <PrivacySection />

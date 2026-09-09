@@ -5,7 +5,7 @@
 <title>OG image — AI Barangay Problem Mapper</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
   :root {
     --bg: #f7f6ed;
@@ -15,6 +15,7 @@
     --text-3: #8a948c;
     --mono: 'IBM Plex Mono', ui-monospace, monospace;
     --display: 'Space Grotesk', sans-serif;
+    --body: 'Inter', system-ui, sans-serif;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { width: 1200px; height: 630px; background: var(--bg); overflow: hidden; position: relative; font-family: var(--mono); }
@@ -31,9 +32,9 @@
     justify-content: space-between;
     align-items: baseline;
     font-size: 15px;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.18em;
     color: var(--dark);
-    font-weight: 500;
+    font-weight: 600;
   }
   .top .sub { color: var(--text-3); }
 
@@ -43,22 +44,20 @@
     font-size: 92px;
     font-weight: 700;
     letter-spacing: -0.03em;
-    line-height: 1.0;
+    line-height: 1.05;
     color: var(--dark);
   }
   .headline .accent { color: var(--teal); }
 
-  .chain {
-    display: flex;
-    align-items: baseline;
-    gap: 16px;
-    margin-top: 44px;
-    font-size: 15px;
-    letter-spacing: 0.14em;
+  .lede {
+    margin-top: 40px;
+    max-width: 600px;
+    font-family: var(--body);
+    font-size: 19px;
+    line-height: 1.65;
     color: #3f4b47;
   }
-  .chain b { color: var(--teal); font-weight: 600; margin-right: 8px; }
-  .chain .arrow { color: var(--text-3); }
+  .lede b { color: var(--dark); font-weight: 600; }
 
   .bottom {
     margin-top: auto;
@@ -68,7 +67,7 @@
   }
   .brand {
     font-size: 14px;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.18em;
     color: var(--text-3);
   }
   .brand strong { color: var(--dark); font-weight: 600; }
@@ -87,8 +86,8 @@
 <body>
   <div class="frame">
     <div class="top">
-      <span>SAN ISIDRO BARANGAY · LOCAL GOVERNMENT UNIT</span>
-      <span class="sub">OFFICIAL COMMUNITY DIGITAL SERVICE</span>
+      <span>AI BARANGAY PROBLEM MAPPER</span>
+      <span class="sub">SAN ISIDRO BARANGAY • LOCAL GOVERNMENT UNIT</span>
     </div>
 
     <div class="headline">
@@ -96,11 +95,9 @@
       <span class="accent">SMARTER RESPONSE.</span>
     </div>
 
-    <div class="chain">
-      <span><b>01</b>PROBLEMS</span><span class="arrow">→</span>
-      <span><b>02</b>LOCATION</span><span class="arrow">→</span>
-      <span><b>03</b>INTELLIGENCE</span><span class="arrow">→</span>
-      <span><b>04</b>ACTION</span>
+    <div class="lede">
+      Report community problems, track their progress, and help your
+      barangay respond with better information.
     </div>
 
     <div class="bottom">
