@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from '@/lib/router-shim';
 import { Landmark, ShieldCheck, Cpu, Users } from 'lucide-react';
 import { PUBLIC_CONFIG } from '@/lib/data/publicData';
-import { AIExplanation, PrivacySection, CTASection } from '@/components/public';
+import { AIExplanation, PrivacySection } from '@/components/public';
 
 /**
  * AboutPage — what the platform is, who runs it, and the safeguards
@@ -120,10 +120,6 @@ export default function AboutPage() {
 
       <AIExplanation />
       <PrivacySection />
-      <CTASection
-        title="PART OF THIS COMMUNITY?"
-        subtitle="Your reports help the barangay decide where attention is needed most."
-      />
     </>
   );
 }

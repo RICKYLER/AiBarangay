@@ -4,7 +4,7 @@ import {
   CommunityProblemStory, WhatIsSection, HowItWorksStory,
   AiIntelligence,
   ImpactStats, NewsPreview, CommunityImpact, PrivacySection,
-  Announcements, EmergencyContacts, CTASection,
+  Announcements, EmergencyContacts,
 } from '@/components/public';
 
 /**
@@ -34,7 +34,6 @@ export default function HomePage() {
       <PrivacySection />
       <Announcements />
       <EmergencyContacts />
-      <CTASection />
     </>
   );
 }

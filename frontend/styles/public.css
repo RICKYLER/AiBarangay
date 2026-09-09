@@ -1805,76 +1805,13 @@ html:has(.pub-app) {
 }
 
 /* ------------------------------------------------------------
-   17. FINAL CTA
-   ------------------------------------------------------------ */
-.pub-cta-band {
-  background: var(--pub-dark);
-  color: #ffffff;
-  padding: clamp(72px, 10vw, 120px) 0;
-}
-
-/* Asymmetric finale: headline left, actions right */
-.pub-cta-inner {
-  display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
-  gap: 32px 64px;
-  align-items: center;
-  text-align: left;
-}
-
-.pub-cta-title {
-  font-family: var(--pub-font-display);
-  font-size: clamp(30px, 4.6vw, 48px);
-  font-weight: 700;
-  letter-spacing: -0.015em;
-  line-height: 1.08;
-  color: #f7f6ed;
-  text-wrap: balance;
-}
-
-.pub-cta-sub {
-  font-size: 15.5px;
-  color: rgba(238, 238, 238, 0.75);
-  max-width: 520px;
-  line-height: 1.65;
-  margin-top: 14px;
-}
-
-.pub-cta-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
-/* Light primary button for dark band */
-.pub-cta-band .pub-btn-primary {
-  background: var(--pub-teal);
-  color: #ffffff;
-}
-
-.pub-cta-band .pub-btn-primary:hover {
-  background: var(--pub-teal-hover);
-}
-
-.pub-cta-band .pub-btn-secondary {
-  background: #ffffff;
-  border-color: #ffffff;
-  color: var(--pub-dark);
-}
-
-.pub-cta-band .pub-btn-secondary:hover {
-  background: #e8f0e9;
-}
-
-/* ------------------------------------------------------------
-   18. FOOTER
-   ------------------------------------------------------------ */
+   18. FOOTER — compact two-row institutional band
+   ------------------------------------------------------------
+   Row 1: brand · navigation links
+   Row 2 (thin divider above): LGU identity · email contact */
 .pub-footer {
   background: var(--pub-dark);
   color: rgba(255, 255, 255, 0.78);
-  border-top: 1px solid rgba(14, 76, 65, 0.35);
 }
 
 .pub-footer-main {
@@ -1882,24 +1819,24 @@ html:has(.pub-app) {
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 10px 24px;
-  padding: 14px 0;
+  gap: 6px 24px;
+  padding: 12px 0;
 }
 
 .pub-footer-brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
 }
 
 .pub-footer-brand .pub-brand-mark {
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
 }
 
 .pub-footer-name {
-  font-size: 13.5px;
-  font-weight: 800;
+  font-size: 13px;
+  font-weight: 700;
   color: #ffffff;
   line-height: 1.3;
 }
@@ -1912,10 +1849,10 @@ html:has(.pub-app) {
 }
 
 .pub-footer-link {
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.72);
-  padding: 3px 9px;
+  padding: 2px 8px;
   border-radius: 6px;
   transition: background var(--pub-speed), color var(--pub-speed);
 }
@@ -1926,22 +1863,22 @@ html:has(.pub-app) {
 }
 
 .pub-footer-bottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 10px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 8px 0;
 }
 
 .pub-footer-bottom-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.55);
 }
 
 .pub-footer-bottom-inner a {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.65);
   transition: color var(--pub-speed);
 }
 
@@ -2624,15 +2561,6 @@ html:has(.pub-app) {
     font-size: 21px;
   }
 
-  .pub-cta-inner {
-    grid-template-columns: 1fr;
-    gap: 26px;
-  }
-
-  .pub-cta-actions {
-    justify-content: flex-start;
-  }
-
   .pub-map-panel-head {
     flex-direction: column;
     align-items: flex-start;
@@ -2665,11 +2593,18 @@ html:has(.pub-app) {
   .pub-footer-main {
     flex-direction: column;
     align-items: flex-start;
+    gap: 6px;
+  }
+
+  .pub-footer-links {
+    flex-wrap: wrap;
   }
 
   .pub-footer-bottom-inner {
-    justify-content: center;
-    text-align: center;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    font-size: 11px;
   }
 
   .pub-road-cta {

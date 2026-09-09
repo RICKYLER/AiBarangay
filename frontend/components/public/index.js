@@ -22,7 +22,6 @@ export { default as Announcements } from './Announcements';
 export { default as NewsFeed } from './NewsFeed';
 export { default as NewsPreview } from './NewsPreview';
 export { default as EmergencyContacts } from './EmergencyContacts';
-export { default as CTASection } from './CTASection';
 export { default as GovernmentFooter } from './GovernmentFooter';
 export { default as MapMockup } from './MapMockupClient';
 export { default as CommunityMapLive } from './CommunityMapLiveClient';

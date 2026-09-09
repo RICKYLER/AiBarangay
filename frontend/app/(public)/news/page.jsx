@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { NewsFeed, CTASection } from '@/components/public';
+import { NewsFeed } from '@/components/public';
 
 /**
  * NewsPage — the public community news feed: anonymized activity
@@ -27,11 +27,6 @@ export default function NewsPage() {
 
         <NewsFeed />
       </div>
-
-      <CTASection
-        title="SEE SOMETHING THAT NEEDS FIXING?"
-        subtitle="Every resolved problem on this page started with one resident report."
-      />
     </>
   );
 }

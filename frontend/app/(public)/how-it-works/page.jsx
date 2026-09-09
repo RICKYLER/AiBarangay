@@ -3,7 +3,7 @@ import { Link } from '@/lib/router-shim';
 import { ArrowRight } from 'lucide-react';
 import {
   ProcessSteps, ReportableProblems, TransparencyTimeline,
-  AIExplanation, CTASection,
+  AIExplanation,
 } from '@/components/public';
 
 /**
@@ -40,10 +40,6 @@ export default function HowItWorksPage() {
       <ReportableProblems />
       <TransparencyTimeline />
       <AIExplanation />
-      <CTASection
-        title="READY TO MAKE YOUR FIRST REPORT?"
-        subtitle="Creating a resident account takes just a few minutes."
-      />
     </>
   );
 }

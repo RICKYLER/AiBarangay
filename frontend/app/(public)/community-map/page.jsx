@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { CommunityMapLive, CTASection, PrivacySection } from '@/components/public';
+import { CommunityMapLive, PrivacySection } from '@/components/public';
 
 /**
  * CommunityMapPage — full public map view, backed by live verified
@@ -42,10 +42,6 @@ export default function CommunityMapPage() {
       </div>
 
       <PrivacySection />
-      <CTASection
-        title="SPOT SOMETHING ON THE MAP?"
-        subtitle="Reports from residents like you build this picture. Add yours."
-      />
     </>
   );
 }
