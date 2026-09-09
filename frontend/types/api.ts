@@ -176,6 +176,29 @@ export interface MapHotspot {
   severity_score: number | null;
 }
 
+export interface FeedItem {
+  item_type: 'REPORT' | 'INCIDENT';
+  ref_number: string;
+  category: string | null;
+  category_color: string | null;
+  priority: string | null;
+  status: string | null;
+  barangay: string | null;
+  zone: string | null;
+  occurred_at: string;
+  resolved_at: string | null;
+  office: string | null;
+  resolution_summary: string | null;
+}
+
+export interface FeedStats {
+  new_reports_7d: number;
+  active_incidents: number;
+  resolved_total: number;
+}
+
+export type FeedFilter = 'ALL' | 'NEW' | 'ACTIVE' | 'RESOLVED';
+
 export interface CreateReportResult {
   ok: boolean;
   reportNumber: string;

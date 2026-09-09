@@ -35,6 +35,7 @@ export const NAV_LINKS = [
   { to: '/', label: 'Home' },
   { to: '/how-it-works', label: 'How It Works' },
   { to: '/community-map', label: 'Community Map' },
+  { to: '/news', label: 'News' },
   { to: '/about', label: 'About' },
   { to: '/help', label: 'Help' },
 ];
@@ -361,6 +362,7 @@ export const EMERGENCY_CONTACTS = [
 export const FOOTER_SERVICES = [
   { to: '/register', label: 'Report a Problem' },
   { to: '/community-map', label: 'Community Map' },
+  { to: '/news', label: 'Community News' },
   { to: '/how-it-works', label: 'How It Works' },
   { to: '/help', label: 'Help Center' },
 ];

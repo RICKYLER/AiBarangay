@@ -15,6 +15,29 @@ export async function publicMap(_req, res) {
   res.json({ incidents: rows, hotspots: hotspots.rows });
 }
 
+const FEED_FILTERS = new Set(['ALL', 'NEW', 'ACTIVE', 'RESOLVED']);
+
+/**
+ * GET /api/gis/public-feed — anonymized news feed of community
+ * activity for the public news page: fresh resident reports and
+ * incidents from verification through resolution. No personal
+ * data, no report titles/descriptions, no exact addresses
+ * (see database/functions/public_feed.sql).
+ */
+export async function publicFeed(req, res) {
+  // SECURITY DEFINER functions — same sanctioned anonymous read
+  // path as publicMap above. Anonymized columns only.
+  const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 24, 1), 50);
+  const filter = FEED_FILTERS.has(req.query.filter) ? req.query.filter : 'ALL';
+
+  const { rows } = await withDb((c) =>
+    c.query('SELECT * FROM get_public_feed($1, $2)', [limit, filter])
+  );
+  const stats = await withDb((c) => c.query('SELECT * FROM get_public_feed_stats()'));
+
+  res.json({ items: rows, stats: stats.rows[0] });
+}
+
 /** GET /api/gis/barangay-boundaries — barangay centers for map labels */
 export async function barangayCenters(_req, res) {
   const { rows } = await withDb((c) =>

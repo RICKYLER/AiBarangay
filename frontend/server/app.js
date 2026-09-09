@@ -107,6 +107,7 @@ app.put('/api/admin/users/:id/status', requireAuth, requireRole(...ADMIN_ROLES),
 
 /* ---------- gis (public) ---------- */
 app.get('/api/gis/public-map', gis.publicMap);
+app.get('/api/gis/public-feed', gis.publicFeed);
 app.get('/api/gis/barangay-centers', gis.barangayCenters);
 
 /* ---------- notifications ---------- */

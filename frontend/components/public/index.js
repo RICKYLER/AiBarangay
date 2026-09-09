@@ -19,6 +19,8 @@ export { default as AIExplanation } from './AIExplanation';
 export { default as PrivacySection } from './PrivacySection';
 export { default as CommunityImpact } from './CommunityImpact';
 export { default as Announcements } from './Announcements';
+export { default as NewsFeed } from './NewsFeed';
+export { default as NewsPreview } from './NewsPreview';
 export { default as EmergencyContacts } from './EmergencyContacts';
 export { default as CTASection } from './CTASection';
 export { default as GovernmentFooter } from './GovernmentFooter';

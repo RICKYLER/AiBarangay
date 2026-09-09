@@ -4685,3 +4685,481 @@ html:has(.pub-app) {
 .pub-st-map-flat {
   padding: 0;
 }
+
+/* ------------------------------------------------------------
+   COMMUNITY NEWS FEED (/news + landing preview)
+   Live, anonymized activity: resident reports, incidents in
+   progress, and resolved problems. Editorial two-rail cards —
+   category identity on the left, the story on the right.
+   ------------------------------------------------------------ */
+
+/* Header stat strip */
+.pub-feed-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--pub-border);
+  border-radius: var(--pub-radius);
+  background: var(--pub-surface);
+  box-shadow: var(--pub-shadow);
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+
+.pub-feed-stat {
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-left: 1px solid var(--pub-divider);
+}
+
+.pub-feed-stat:first-child {
+  border-left: none;
+}
+
+.pub-feed-stat-value {
+  font-family: var(--pub-font-display);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--pub-dark);
+  font-variant-numeric: tabular-nums;
+}
+
+.pub-feed-stat-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--pub-text-2);
+}
+
+/* Filter tabs */
+.pub-feed-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--pub-border-strong);
+  margin-bottom: 22px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.pub-feed-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.pub-feed-tab {
+  font-family: var(--pub-font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--pub-text-2);
+  padding: 10px 16px 11px;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  white-space: nowrap;
+  transition: color var(--pub-speed), border-color var(--pub-speed);
+}
+
+.pub-feed-tab:hover {
+  color: var(--pub-dark);
+}
+
+.pub-feed-tab.active {
+  color: var(--pub-dark);
+  border-bottom-color: var(--pub-dark);
+}
+
+/* Feed cards */
+.pub-feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.pub-feed-card {
+  display: grid;
+  grid-template-columns: 168px 1fr;
+  background: var(--pub-surface);
+  border: 1px solid var(--pub-border);
+  border-radius: var(--pub-radius);
+  box-shadow: var(--pub-shadow);
+  overflow: hidden;
+}
+
+/* Left rail — category identity, tinted by the category color */
+.pub-feed-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 16px;
+  background: var(--pub-surface-inset);
+  border-right: 1px solid var(--pub-divider);
+  border-top: 3px solid var(--cat-color, var(--pub-teal));
+}
+
+.pub-feed-cat-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--pub-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--pub-surface);
+  color: var(--cat-color, var(--pub-teal));
+  border: 1px solid var(--pub-border);
+}
+
+.pub-feed-cat {
+  font-family: var(--pub-font-display);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--pub-text);
+}
+
+.pub-feed-priority {
+  font-family: var(--pub-font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  color: var(--pub-amber);
+}
+
+/* Resolved cards carry the green identity */
+.pub-feed-card.is-resolved .pub-feed-rail {
+  border-top-color: var(--pub-green-deep);
+  background: var(--pub-green-dim);
+}
+
+/* Right column — the story */
+.pub-feed-body {
+  padding: 16px 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.pub-feed-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pub-feed-ref {
+  font-family: var(--pub-font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--pub-text-2);
+}
+
+.pub-feed-where {
+  font-size: 13.5px;
+  color: var(--pub-text);
+  font-weight: 600;
+}
+
+.pub-feed-date {
+  font-weight: 500;
+  color: var(--pub-text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Status badges — semantic colors only */
+.pub-feed-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 5px;
+  font-family: var(--pub-font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.pub-feed-badge.tone-new {
+  background: var(--pub-teal-dim);
+  border: 1px solid var(--pub-teal-border);
+  color: var(--pub-dark);
+}
+
+.pub-feed-badge.tone-active {
+  background: var(--pub-amber-dim);
+  border: 1px solid rgba(180, 83, 9, 0.3);
+  color: var(--pub-amber);
+}
+
+.pub-feed-badge.tone-resolved {
+  background: var(--pub-green-dim);
+  border: 1px solid var(--pub-teal-border);
+  color: var(--pub-green-deep);
+}
+
+/* Six-stage journey (LIFECYCLE_STAGES) */
+.pub-feed-journey {
+  display: flex;
+  gap: 0;
+  margin-top: 2px;
+}
+
+.pub-feed-journey li {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+  min-width: 0;
+}
+
+/* connector line */
+.pub-feed-journey li::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: -50%;
+  width: 100%;
+  height: 2px;
+  background: var(--pub-divider);
+}
+
+.pub-feed-journey li:first-child::before {
+  display: none;
+}
+
+.pub-feed-journey li.done::before,
+.pub-feed-journey li.current::before {
+  background: var(--pub-teal);
+}
+
+.pub-feed-journey-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--pub-surface);
+  border: 2px solid var(--pub-border-strong);
+  position: relative;
+  z-index: 1;
+}
+
+.pub-feed-journey li.done .pub-feed-journey-dot {
+  background: var(--pub-teal);
+  border-color: var(--pub-teal);
+}
+
+.pub-feed-journey li.current .pub-feed-journey-dot {
+  border-color: var(--pub-teal);
+  box-shadow: 0 0 0 3px var(--pub-teal-dim);
+}
+
+.pub-feed-journey-label {
+  font-family: var(--pub-font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--pub-text-3);
+  line-height: 1.25;
+}
+
+.pub-feed-journey li.done .pub-feed-journey-label,
+.pub-feed-journey li.current .pub-feed-journey-label {
+  color: var(--pub-dark);
+}
+
+/* Resolution detail */
+.pub-feed-resolution {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--pub-green-dim);
+  border-left: 3px solid var(--pub-green-deep);
+  border-radius: 0 var(--pub-radius-sm) var(--pub-radius-sm) 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--pub-text);
+}
+
+.pub-feed-resolution svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--pub-green-deep);
+}
+
+.pub-feed-office {
+  font-size: 12px;
+  color: var(--pub-text-2);
+}
+
+/* Empty / loading state */
+.pub-feed-empty {
+  border: 1px dashed var(--pub-border-strong);
+  border-radius: var(--pub-radius);
+  background: var(--pub-surface-2);
+  padding: 48px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.pub-feed-empty-title {
+  font-family: var(--pub-font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--pub-text);
+}
+
+.pub-feed-empty-text {
+  font-size: 13px;
+  color: var(--pub-text-2);
+  max-width: 460px;
+}
+
+/* Landing preview panel */
+.pub-feed-preview {
+  background: var(--pub-surface);
+  border: 1px solid var(--pub-border);
+  border-radius: var(--pub-radius);
+  box-shadow: var(--pub-shadow);
+  padding: 22px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.pub-feed-preview > .pub-demo-badge {
+  align-self: flex-end;
+}
+
+.pub-feed-preview-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.pub-feed-preview-row {
+  display: grid;
+  grid-template-columns: 130px 150px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 2px;
+  border-bottom: 1px solid var(--pub-divider);
+}
+
+.pub-feed-preview-row:last-child {
+  border-bottom: none;
+}
+
+.pub-feed-preview-cat {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: var(--cat-color, var(--pub-dark));
+  border-left: 3px solid var(--cat-color, var(--pub-teal));
+  padding-left: 9px;
+  line-height: 1.3;
+}
+
+.pub-feed-preview-ref {
+  font-family: var(--pub-font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--pub-text-2);
+}
+
+.pub-feed-preview-where {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--pub-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pub-feed-preview-empty {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 4px;
+  font-size: 13.5px;
+  color: var(--pub-text-2);
+}
+
+.pub-feed-preview-empty svg {
+  color: var(--pub-text-3);
+}
+
+.pub-feed-preview-cta {
+  display: flex;
+  justify-content: center;
+  padding-top: 6px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .pub-feed-preview-row {
+    grid-template-columns: 110px 1fr auto;
+  }
+
+  .pub-feed-preview-ref {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .pub-feed-card {
+    grid-template-columns: 1fr;
+  }
+
+  .pub-feed-rail {
+    flex-direction: row;
+    align-items: center;
+    border-right: none;
+    border-bottom: 1px solid var(--pub-divider);
+    border-top: none;
+    border-left: 3px solid var(--cat-color, var(--pub-teal));
+  }
+
+  .pub-feed-card.is-resolved .pub-feed-rail {
+    border-left-color: var(--pub-green-deep);
+  }
+
+  .pub-feed-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .pub-feed-stat {
+    border-left: none;
+    border-top: 1px solid var(--pub-divider);
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  .pub-feed-stat:first-child {
+    border-top: none;
+  }
+
+  .pub-feed-journey-label {
+    display: none;
+  }
+
+  .pub-feed-preview-row {
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+  }
+
+  .pub-feed-preview-where {
+    display: none;
+  }
+}
+
+/* Reduced motion — reveal/transition effects are disabled globally
+   (section 24); the feed itself is static content and needs no
+   additional overrides. */
