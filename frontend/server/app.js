@@ -56,7 +56,9 @@ app.post('/api/auth/login', auth.login);
 app.post('/api/auth/forgot-password', auth.forgotPassword);
 app.post('/api/auth/reset-password', auth.resetPassword);
 app.post('/api/auth/logout', auth.logout);
-app.get('/api/auth/me', requireAuth, auth.me);
+/* No requireAuth — me() answers { user: null } for anonymous visitors
+   instead of a 401, so public pages don't log console errors. */
+app.get('/api/auth/me', auth.me);
 
 /* ---------- profile (own identity) ---------- */
 app.get('/api/profile', requireAuth, userRoute(profile.getProfile));

@@ -302,14 +302,16 @@ export async function logout(req, res) {
   res.json({ ok: true });
 }
 
-/** GET /api/auth/me — current session user (used by the frontend AuthProvider) */
+/** GET /api/auth/me — current session user (used by the frontend AuthProvider).
+    Answers { user: null } when signed out — "who am I" is not an error,
+    and a 401 here would log a console error on every public page. */
 export async function me(req, res) {
   const token = req.cookies?.[SESSION_COOKIE];
-  if (!token) return res.status(401).json({ error: 'Not signed in.' });
+  if (!token) return res.json({ user: null });
   const user = await withDb((client) =>
     client.query('SELECT * FROM resolve_session($1)', [hashToken(token)])
       .then(({ rows }) => rows[0] || null)
   );
-  if (!user) return res.status(401).json({ error: 'Session expired.' });
+  if (!user || !user.is_active) return res.json({ user: null });
   res.json({ user: publicUser(user) });
 }

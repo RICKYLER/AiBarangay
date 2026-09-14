@@ -49,7 +49,14 @@
   --res-ease: cubic-bezier(0.2, 0.7, 0.3, 1);
 }
 
-/* Repaint the page ground behind the app (the legacy body gradient). */
+/* Repaint the page ground behind the app (the legacy body gradient).
+   overflow-x clip guards against stray horizontal scroll on small
+   screens (clip, not hidden, so the sticky header keeps working). */
+html:has(.res-app) {
+  overflow-x: clip;
+  overscroll-behavior-y: contain;
+}
+
 body:has(.res-app) {
   background: #eeeeee;
 }
@@ -69,10 +76,12 @@ body:has(.res-app) {
 
 .res-app {
   min-height: 100vh;
+  min-height: 100dvh; /* correct height under the mobile address bar */
   background: var(--res-bg);
   color: var(--res-text-1);
   font-size: 15px;
   line-height: 1.55;
+  -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -738,6 +747,8 @@ body:has(.res-app) {
   gap: 16px;
   min-height: 68px;
   padding: 10px 28px;
+  /* Clear the notch/status bar when installed as an app */
+  padding-top: calc(10px + env(safe-area-inset-top, 0px));
   background: var(--res-surface);
   border-bottom: 1px solid rgba(31, 111, 95, 0.12);
 }
@@ -2935,6 +2946,21 @@ button.res-report:hover {
    no collapsed state in a drawer) and the width is pinned so the
    collapse class never animates it while sliding. */
 @media (max-width: 768px) {
+  /* 16px keeps iOS Safari from auto-zooming into the field on focus */
+  .res-input,
+  .res-textarea,
+  .res-select {
+    font-size: 16px;
+  }
+
+  /* Larger Leaflet zoom buttons for touch */
+  .res-app .leaflet-control-zoom a {
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    font-size: 18px;
+  }
+
   .res-side,
   .res-side.collapsed {
     position: fixed;

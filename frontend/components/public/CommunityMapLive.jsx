@@ -123,6 +123,12 @@ export default function CommunityMapLive() {
           100% { transform: scale(0.9); opacity: 0.7; }
         }
         .rmap-root { position: relative; width: 100%; overflow: hidden; }
+        /* Map canvas: tall on desktop, viewport-proportional on phones */
+        .rmap-canvas {
+          width: 100%;
+          height: 560px;
+          height: clamp(380px, 60dvh, 560px);
+        }
         .rmap-popup .leaflet-popup-content-wrapper {
           padding: 0 !important; border-radius: 14px !important; overflow: hidden;
           border: none !important; width: 270px !important;
@@ -175,7 +181,7 @@ export default function CommunityMapLive() {
         zoom={mapZoom}
         scrollWheelZoom={false}
         zoomControl
-        style={{ width: '100%', height: '560px' }}
+        className="rmap-canvas"
         aria-label="Tagum City street map with anonymized verified incident markers"
       >
         <TileLayer

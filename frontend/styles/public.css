@@ -70,6 +70,8 @@
   color: var(--pub-text);
   background: var(--pub-bg);
   min-height: 100vh;
+  min-height: 100dvh; /* correct height under the mobile address bar */
+  -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -80,9 +82,13 @@ body:has(.pub-app) {
 }
 
 /* Keep overscroll (rubber-band) ivory too — globals.css paints html dark
-   for the portal; the public site must never flash #070a12. */
+   for the portal; the public site must never flash #070a12. overflow-x
+   clip guards against stray horizontal scroll on small screens (clip,
+   not hidden, so the sticky nav keeps working). */
 html:has(.pub-app) {
   background-color: #f7f6ed;
+  overflow-x: clip;
+  overscroll-behavior-y: contain;
 }
 
 /* Zero browser-default styling inside the public shell */
@@ -349,6 +355,8 @@ html:has(.pub-app) {
   background: var(--pub-dark);
   color: #ffffff;
   font-size: 12px;
+  /* Clear the notch/status bar when installed as an app */
+  padding-top: env(safe-area-inset-top, 0px);
 }
 
 .pub-infobar-inner {
@@ -549,46 +557,119 @@ html:has(.pub-app) {
 /* Mobile toggle */
 .pub-nav-toggle {
   display: none;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: var(--pub-radius-sm);
   border: 1px solid var(--pub-border);
   background: var(--pub-surface);
   color: var(--pub-dark);
   align-items: center;
   justify-content: center;
+  transition: background var(--pub-speed);
 }
 
-/* Mobile menu panel */
+.pub-nav-toggle:active {
+  background: var(--pub-sage);
+}
+
+/* Dimmed scrim behind the open mobile menu */
+.pub-mobile-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 800; /* under the sticky nav (1000), above page content */
+  background: rgba(10, 56, 47, 0.32);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+
+.pub-mobile-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Mobile menu — slides down as a sheet under the solid nav bar.
+   Grid rows keep the nav always reachable even on short screens. */
 .pub-mobile-menu {
   display: none;
   border-top: 1px solid var(--pub-divider);
   background: var(--pub-surface);
-  padding: 12px 0 18px;
+  padding: 14px 0 calc(20px + env(safe-area-inset-bottom, 0px));
+  max-height: calc(100dvh - 100px);
+  overflow-y: auto;
+  transform: translateY(-8px);
+  opacity: 0;
 }
 
 .pub-mobile-menu.open {
-  display: block;
+  display: grid;
+  animation: pub-menu-in 0.24s ease forwards;
+}
+
+@keyframes pub-menu-in {
+  from {
+    transform: translateY(-8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .pub-mobile-links {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  margin-bottom: 14px;
+  gap: 4px;
+  margin-bottom: 16px;
 }
 
 .pub-mobile-link {
-  padding: 11px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 52px; /* comfortable thumb target */
+  padding: 14px 16px;
   border-radius: var(--pub-radius-sm);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--pub-text-2);
+  /* staggered entrance: each link settles 40ms after the previous */
+  animation: pub-menu-item-in 0.3s ease both;
+  animation-delay: calc(var(--stagger, 0) * 40ms);
+}
+
+@keyframes pub-menu-item-in {
+  from {
+    transform: translateY(-6px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.pub-mobile-link:active {
+  background: var(--pub-surface-inset);
 }
 
 .pub-mobile-link.active {
   background: var(--pub-teal-dim);
   color: var(--pub-dark);
+}
+
+/* Two-digit mono index on the trailing edge — editorial, not decorative */
+.pub-mobile-link-index {
+  font-family: var(--pub-font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--pub-text-3);
+}
+
+.pub-mobile-link.active .pub-mobile-link-index {
+  color: var(--pub-teal);
 }
 
 .pub-mobile-actions {
@@ -599,6 +680,7 @@ html:has(.pub-app) {
 
 .pub-mobile-actions .pub-btn {
   width: 100%;
+  min-height: 48px;
 }
 
 /* ------------------------------------------------------------
@@ -1812,6 +1894,8 @@ html:has(.pub-app) {
 .pub-footer {
   background: var(--pub-dark);
   color: rgba(255, 255, 255, 0.78);
+  /* Clear the home indicator when installed as an app */
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 .pub-footer-main {
@@ -2464,6 +2548,12 @@ html:has(.pub-app) {
     padding: 0 16px;
   }
 
+  /* 16px keeps iOS Safari from auto-zooming into the field on focus */
+  .pub-input,
+  .pub-select {
+    font-size: 16px;
+  }
+
   .pub-section {
     padding: 44px 0;
   }
@@ -2771,6 +2861,7 @@ html:has(.pub-app) {
   position: relative;
   overflow: hidden;
   min-height: calc(100vh - 120px);
+  min-height: calc(100dvh - 120px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -3169,6 +3260,7 @@ html:has(.pub-app) {
    content grid instead of centering the composition. */
 .pub-st-hero {
   min-height: calc(100vh - 92px);
+  min-height: calc(100dvh - 92px);
   padding: 76px 0 86px;
   background: var(--pub-bg);
 }
@@ -3237,6 +3329,7 @@ html:has(.pub-app) {
 @media (max-width: 640px) {
   .pub-st-hero {
     min-height: calc(100vh - 64px);
+    min-height: calc(100dvh - 64px);
     padding: 58px 0 72px;
   }
 
@@ -5098,3 +5191,1062 @@ html:has(.pub-app) {
 /* Reduced motion — reveal/transition effects are disabled globally
    (section 24); the feed itself is static content and needs no
    additional overrides. */
+
+/* ------------------------------------------------------------
+   25. DOWNLOAD APP PAGE (.pub-dl-ref) — Centered 3-Phone Showcase
+   ------------------------------------------------------------ */
+.pub-dl-ref-hero {
+  text-align: center;
+  padding: 48px 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pub-dl-ref-eyebrow {
+  font-family: var(--pub-font-body);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--pub-text-2);
+  margin-bottom: 12px;
+}
+
+.pub-dl-ref-title {
+  font-family: var(--pub-font-display);
+  font-size: clamp(34px, 5.5vw, 56px);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: #135747; /* Deep green matching reference image */
+  margin-bottom: 28px;
+}
+
+.pub-dl-ref-badges {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 44px;
+}
+
+.pub-dl-store-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 22px;
+  background: #000000;
+  color: #ffffff;
+  border-radius: 12px;
+  text-decoration: none;
+  font-family: var(--pub-font-body);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+}
+
+.pub-dl-store-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+  color: #ffffff;
+  background: #111111;
+}
+
+.pub-dl-store-badge-sub {
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.8;
+  display: block;
+  line-height: 1;
+}
+
+.pub-dl-store-badge-title {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* 3-Phone Overlapping Showcase */
+.pub-dl-phones-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto 40px;
+  padding-top: 15px;
+}
+
+.pub-dl-phone-card {
+  background: #ffffff;
+  border: 9px solid #0f172a;
+  border-radius: 44px;
+  box-shadow: 
+    0 25px 60px -15px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Realistic side buttons (volume & power) */
+.pub-dl-phone-card::before {
+  content: '';
+  position: absolute;
+  left: -12px;
+  top: 90px;
+  width: 3px;
+  height: 48px;
+  background: #334155;
+  border-radius: 2px 0 0 2px;
+}
+
+.pub-dl-phone-card::after {
+  content: '';
+  position: absolute;
+  right: -12px;
+  top: 110px;
+  width: 3px;
+  height: 60px;
+  background: #334155;
+  border-radius: 0 2px 2px 0;
+}
+
+.pub-dl-phone-card.phone-left {
+  width: 285px;
+  height: 520px;
+  margin-right: -40px;
+  z-index: 1;
+  transform: translateY(20px);
+}
+
+.pub-dl-phone-card.phone-center {
+  width: 325px;
+  height: 570px;
+  z-index: 3;
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.35);
+}
+
+.pub-dl-phone-card.phone-right {
+  width: 285px;
+  height: 520px;
+  margin-left: -40px;
+  z-index: 2;
+  transform: translateY(20px);
+}
+
+/* Realistic Top Status Bar & Dynamic Island */
+.pub-dl-phone-statusbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 18px 4px;
+  background: #ffffff;
+  font-family: var(--pub-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: #0f172a;
+  position: relative;
+  z-index: 20;
+}
+
+.pub-dl-phone-notch {
+  width: 86px;
+  height: 20px;
+  background: #0f172a;
+  border-radius: 20px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 6px;
+  z-index: 25;
+}
+
+.pub-dl-phone-status-icons {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  color: #0f172a;
+}
+
+/* Bottom Home Indicator Bar */
+.pub-dl-phone-home-indicator {
+  width: 110px;
+  height: 4px;
+  background: #94a3b8;
+  border-radius: 4px;
+  margin: 6px auto 6px;
+  flex-shrink: 0;
+}
+
+/* Bottom App Navigation Bar inside Phone */
+.pub-dl-phone-bottom-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 6px 8px 2px;
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+.pub-dl-phone-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 8px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.pub-dl-phone-nav-item.active {
+  color: #135747;
+}
+
+.pub-dl-phone-nav-fab {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #135747, #10b981);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -16px;
+  box-shadow: 0 4px 12px rgba(19, 87, 71, 0.4);
+}
+
+/* Realistic Interactive Map Pins */
+.pub-map-pin-pulse {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 0.2s ease;
+}
+
+.pub-map-pin-pulse:hover {
+  transform: scale(1.15);
+  z-index: 20;
+}
+
+.pub-map-pin-badge {
+  font-size: 8px;
+  font-weight: 700;
+  color: #ffffff;
+  padding: 2px 6px;
+  border-radius: 10px;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  margin-bottom: 2px;
+}
+
+.pub-map-pin-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.pub-map-pin-dot::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  opacity: 0.7;
+  animation: mapPinPulse 2s infinite;
+}
+
+@keyframes mapPinPulse {
+  0% { transform: scale(0.8); opacity: 0.9; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+@media (max-width: 860px) {
+  .pub-dl-phones-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  .pub-dl-phone-card.phone-left,
+  .pub-dl-phone-card.phone-right {
+    margin: 0;
+    transform: none;
+    width: 280px;
+    height: 490px;
+  }
+  .pub-dl-phone-card.phone-center {
+    width: 290px;
+    height: 510px;
+  }
+}
+
+/* Original hero fallback support */
+.pub-dl-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 40px 64px;
+  align-items: center;
+  padding: 40px 0 56px;
+  border-top: 1px solid var(--pub-border);
+}
+
+.pub-dl-title {
+  font-family: var(--pub-font-display);
+  font-size: clamp(34px, 5vw, 52px);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.06;
+  color: var(--pub-dark);
+  margin: 14px 0 14px;
+}
+
+.pub-dl-hero .pub-section-sub {
+  font-size: 16px;
+  max-width: 480px;
+}
+
+/* App identity row: icon + name + org + rating */
+.pub-dl-app {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 28px;
+  padding: 16px;
+  background: var(--pub-surface);
+  border: 1px solid var(--pub-border);
+  border-radius: var(--pub-radius);
+  box-shadow: var(--pub-shadow);
+  max-width: 480px;
+}
+
+.pub-dl-app-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 17px;
+  box-shadow: 0 6px 18px rgba(14, 76, 65, 0.2);
+  flex-shrink: 0;
+}
+
+.pub-dl-app-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.pub-dl-app-name {
+  font-family: var(--pub-font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--pub-dark);
+  line-height: 1.3;
+}
+
+.pub-dl-app-org {
+  font-size: 12.5px;
+  color: var(--pub-text-3);
+}
+
+.pub-dl-app-rating {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-top: 4px;
+  color: #d9a514; /* warm civic gold for stars */
+  font-size: 13px;
+}
+
+.pub-dl-app-rating b {
+  color: var(--pub-text);
+  font-size: 13.5px;
+  margin-left: 4px;
+}
+
+.pub-dl-app-rating-count {
+  color: var(--pub-text-3);
+  font-size: 12.5px;
+  margin-left: 4px;
+}
+
+/* Big install button */
+.pub-dl-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 480px;
+  margin-top: 20px;
+  padding: 17px 28px;
+  border: none;
+  border-radius: 12px;
+  background: var(--pub-teal);
+  color: #ffffff;
+  font-family: var(--pub-font-body);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(43, 168, 137, 0.35);
+  transition: background var(--pub-speed), transform var(--pub-speed), box-shadow var(--pub-speed);
+}
+
+.pub-dl-cta:hover {
+  background: var(--pub-teal-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 26px rgba(43, 168, 137, 0.42);
+}
+
+.pub-dl-cta:active {
+  transform: translateY(0);
+}
+
+.pub-dl-installed,
+.pub-dl-outcome {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--pub-green-deep);
+  margin-top: 20px;
+}
+
+.pub-dl-outcome {
+  font-weight: 500;
+  color: var(--pub-text-2);
+}
+
+.pub-dl-outcome.ok {
+  font-weight: 600;
+  color: var(--pub-green-deep);
+}
+
+.pub-dl-hero-trust {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--pub-text-3);
+}
+
+.pub-dl-hero-trust svg {
+  color: var(--pub-teal);
+  flex-shrink: 0;
+}
+
+/* ---- Phone mockup ---- */
+.pub-dl-phone {
+  display: flex;
+  justify-content: center;
+}
+
+.pub-dl-phone-frame {
+  width: 280px;
+  border-radius: 38px;
+  background: var(--pub-dark-deep);
+  padding: 10px;
+  box-shadow:
+    0 24px 64px rgba(14, 76, 65, 0.28),
+    0 4px 16px rgba(14, 76, 65, 0.18),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.06);
+}
+
+/* status bar */
+.pub-dl-phone-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 18px 6px;
+  font-family: var(--pub-font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--pub-text-2);
+}
+
+.pub-dl-phone-status-icons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* app header */
+.pub-dl-phone-appbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px 10px;
+  border-bottom: 1px solid var(--pub-divider);
+}
+
+.pub-dl-phone-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--pub-font-display);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--pub-dark);
+}
+
+.pub-dl-phone-appbar > svg {
+  color: var(--pub-text-3);
+}
+
+/* mini map */
+.pub-dl-phone-map {
+  position: relative;
+  height: 168px;
+  margin: 10px 10px 8px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f0f5ef;
+  border: 1px solid var(--pub-border);
+}
+
+.pub-dl-phone-map svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.pub-dl-pin {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 3px 8px rgba(16, 44, 38, 0.25);
+  border: 1.5px solid var(--pub-border);
+}
+
+.pub-dl-pin.is-resolved {
+  background: var(--pub-green-dim);
+  border-color: var(--pub-teal-border);
+}
+
+.pub-dl-phone-map-badge {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  font-family: var(--pub-font-mono);
+  font-size: 7.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--pub-dark);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--pub-border);
+  border-radius: 20px;
+  padding: 3px 8px;
+}
+
+/* mini report card */
+.pub-dl-phone-report {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 10px 10px;
+  padding: 10px 12px;
+  background: var(--pub-surface);
+  border: 1px solid var(--pub-border);
+  border-radius: 12px;
+}
+
+.pub-dl-phone-report-cat {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--pub-dark);
+}
+
+.pub-dl-phone-report-loc {
+  font-size: 10px;
+  color: var(--pub-text-3);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pub-dl-phone-report-status {
+  font-family: var(--pub-font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #b45309;
+  background: var(--pub-amber-dim);
+  border: 1px solid rgba(180, 83, 9, 0.25);
+  border-radius: 20px;
+  padding: 3px 7px;
+  white-space: nowrap;
+}
+
+/* bottom nav */
+.pub-dl-phone-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px 8px 12px;
+  border-top: 1px solid var(--pub-divider);
+  color: var(--pub-text-3);
+}
+
+.pub-dl-phone-nav .is-active {
+  color: var(--pub-teal);
+}
+
+.pub-dl-phone-nav-add {
+  width: 44px;
+  height: 44px;
+  margin-top: -26px; /* floats above the bar like the real app */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--pub-teal);
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(43, 168, 137, 0.4);
+}
+
+/* ---- QR code ---- */
+.pub-dl-qr {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  padding: 32px 36px;
+  background: var(--pub-surface);
+  border: 1px solid var(--pub-border);
+  border-radius: var(--pub-radius);
+  box-shadow: var(--pub-shadow);
+  margin-bottom: 56px;
+}
+
+.pub-dl-qr-box {
+  padding: 12px;
+  background: #ffffff;
+  border: 1px solid var(--pub-border);
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.pub-dl-qr-box img {
+  display: block;
+  border-radius: 4px;
+}
+
+.pub-dl-qr-placeholder {
+  display: block;
+  background: var(--pub-surface-inset);
+  border-radius: 4px;
+}
+
+.pub-dl-qr-title {
+  font-family: var(--pub-font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--pub-dark);
+  margin-bottom: 6px;
+}
+
+.pub-dl-qr-text {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--pub-text-2);
+  max-width: 420px;
+}
+
+/* ---- Benefits (editorial numbered rows) ---- */
+.pub-dl-benefits {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--pub-border);
+  margin-bottom: 56px;
+}
+
+.pub-dl-benefit {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 20px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--pub-border);
+}
+
+.pub-dl-benefit-n {
+  font-family: var(--pub-font-mono);
+  font-size: 22px;
+  font-weight: 500;
+  color: rgba(14, 76, 65, 0.28);
+  line-height: 1.1;
+}
+
+.pub-dl-benefit-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--pub-font-display);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--pub-dark);
+  margin-bottom: 6px;
+}
+
+.pub-dl-benefit-title svg {
+  color: var(--pub-teal);
+  flex-shrink: 0;
+}
+
+.pub-dl-benefit-text {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--pub-text-2);
+  max-width: 560px;
+}
+
+/* ---- Install steps ---- */
+.pub-dl-steps-title {
+  font-family: var(--pub-font-display);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--pub-dark);
+  margin-bottom: 22px;
+}
+
+.pub-dl-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  padding-bottom: 24px;
+}
+
+.pub-dl-card {
+  background: var(--pub-surface);
+  border: 1px solid var(--pub-border);
+  border-radius: var(--pub-radius);
+  box-shadow: var(--pub-shadow);
+  padding: 22px 22px 18px;
+}
+
+.pub-dl-card.is-current {
+  border-color: var(--pub-teal-border);
+  box-shadow: 0 0 0 3px var(--pub-teal-dim);
+}
+
+.pub-dl-card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.pub-dl-card-tag {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--pub-dark);
+  color: #ffffff;
+  font-family: var(--pub-font-mono);
+  font-size: 15px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.pub-dl-card-title {
+  font-family: var(--pub-font-display);
+  font-size: 16.5px;
+  font-weight: 700;
+  color: var(--pub-dark);
+}
+
+.pub-dl-card-sub {
+  font-size: 12.5px;
+  color: var(--pub-text-3);
+}
+
+.pub-dl-card-you {
+  margin-left: auto;
+  font-family: var(--pub-font-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--pub-green-deep);
+  background: var(--pub-green-dim);
+  border: 1px solid var(--pub-teal-border);
+  border-radius: 20px;
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+
+.pub-dl-steps-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pub-dl-steps-list li {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--pub-text-2);
+}
+
+.pub-dl-step-n {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--pub-sage);
+  color: var(--pub-dark);
+  font-family: var(--pub-font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.pub-dl-card-note {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--pub-divider);
+  font-size: 12.5px;
+  color: var(--pub-text-3);
+}
+
+/* Two stacked action groups in the mobile menu */
+.pub-mobile-menu .pub-mobile-actions:last-child {
+  margin-bottom: 0;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1024px) {
+  .pub-dl-hero {
+    grid-template-columns: 1fr 0.9fr;
+    gap: 36px;
+  }
+}
+
+@media (max-width: 900px) {
+  .pub-dl-hero {
+    grid-template-columns: 1fr;
+    gap: 44px;
+    padding: 28px 0 44px;
+  }
+
+  .pub-dl-phone {
+    order: 2; /* phone below the CTA on tablet/mobile */
+  }
+
+  .pub-dl-qr {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+    padding: 28px 24px;
+  }
+
+  .pub-dl-qr-text {
+    max-width: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .pub-dl-title {
+    font-size: 32px;
+  }
+
+  .pub-dl-app {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .pub-dl-app-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 13px;
+  }
+
+  .pub-dl-cta {
+    font-size: 16px;
+    padding: 15px 24px;
+  }
+
+  .pub-dl-phone-frame {
+    width: 260px;
+  }
+
+  .pub-dl-benefit {
+    grid-template-columns: 44px 1fr;
+    gap: 12px;
+    padding: 18px 0;
+  }
+
+  .pub-dl-benefit-n {
+    font-size: 16px;
+  }
+
+  .pub-dl-steps-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ------------------------------------------------------------
+   26. MOBILE TAB BAR (.pub-tabbar) — app-style bottom nav
+   Shown on phones only. Solid surface + hairline (no glass
+   effects); IBM Plex Mono micro-labels; the primary "Report"
+   action sits in a raised circle. Hides on scroll-down and
+   returns on scroll-up, mirroring the header bar.
+   ------------------------------------------------------------ */
+.pub-tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 900;
+  display: none; /* phones only — enabled in the 768px query below */
+  grid-template-columns: repeat(5, 1fr);
+  align-items: end;
+  background: var(--pub-surface);
+  border-top: 1px solid var(--pub-border);
+  box-shadow: 0 -1px 2px rgba(16, 44, 38, 0.04);
+  padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px));
+  transform: translateY(0);
+  transition: transform 0.25s ease;
+}
+
+.pub-tabbar.tabbar-hidden {
+  transform: translateY(110%);
+}
+
+.pub-tabbar-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  min-height: 44px; /* thumb-sized target */
+  padding: 8px 2px 6px;
+  color: var(--pub-text-3);
+  line-height: 1;
+}
+
+.pub-tabbar-item:active {
+  color: var(--pub-teal);
+}
+
+.pub-tabbar-item.active {
+  color: var(--pub-dark);
+}
+
+/* Active marker — short teal rule above the item */
+.pub-tabbar-item.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--pub-teal);
+}
+
+.pub-tabbar-label {
+  font-family: var(--pub-font-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Primary action — raised above the bar edge */
+.pub-tabbar-report {
+  color: var(--pub-dark);
+}
+
+.pub-tabbar-report-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin-top: -26px; /* lifts the circle over the top hairline */
+  border-radius: 50%;
+  background: var(--pub-dark);
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(14, 76, 65, 0.26);
+  /* ring in the page-ground colour so the raised circle reads as
+     punching through the bar onto the ivory page */
+  outline: 4px solid var(--pub-bg);
+  transition: transform var(--pub-speed), background var(--pub-speed);
+}
+
+.pub-tabbar-report:active .pub-tabbar-report-btn {
+  background: var(--pub-dark-deep);
+  transform: scale(0.94);
+}
+
+@media (max-width: 768px) {
+  .pub-tabbar {
+    display: grid;
+  }
+
+  /* Keep the footer clear of the fixed bar (incl. home indicator) */
+  .pub-app {
+    padding-bottom: calc(78px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pub-tabbar,
+  .pub-tabbar-report-btn {
+    transition: none;
+  }
+
+  /* Menu appears instantly (no slide/fade). It is display:none when
+     closed, so forcing opacity here only affects the open state. */
+  .pub-mobile-menu,
+  .pub-mobile-menu.open,
+  .pub-mobile-link {
+    animation: none;
+    transition: none;
+    transform: none;
+    opacity: 1;
+  }
+
+  /* The scrim lives in the DOM at all times — opacity must stay 0
+     unless .open raises it, or every page renders dimmed. Only the
+     fade transition is disabled here. */
+  .pub-mobile-overlay {
+    animation: none;
+    transition: none;
+  }
+}

@@ -1,5 +1,6 @@
 export { default as GovernmentHeader } from './GovernmentHeader';
 export { default as GovernmentNav } from './GovernmentNav';
+export { default as MobileTabBar } from './MobileTabBar';
 export { default as ChapterHead } from './ChapterHead';
 export { default as StoryHero } from './StoryHero';
 export { default as CommunityProblemStory } from './CommunityProblemStory';

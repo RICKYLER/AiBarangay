@@ -2176,6 +2176,8 @@ body:has(.gov-app) {
   position: relative;
   height: 460px;
   background: #e9eeec;
+  overflow: hidden;
+  z-index: 1;
 }
 
 .gov-map-stage.gov-map-stage-tall {

@@ -4,11 +4,12 @@ import React, { useState } from 'react';
 import { Link, NavLink, useLocation } from '@/lib/router-shim';
 import {
   ShieldCheck, Menu, X, Landmark, CalendarDays, Accessibility,
-  Siren, LifeBuoy,
+  Siren, LifeBuoy, Download,
 } from 'lucide-react';
 import GovernmentNav from './GovernmentNav';
-import { PUBLIC_CONFIG, REPORT_ROUTE, LOGIN_ROUTE } from '@/lib/data/publicData';
+import { PUBLIC_CONFIG, NAV_LINKS, REPORT_ROUTE, LOGIN_ROUTE } from '@/lib/data/publicData';
 import { useAuth, homeForRole } from '@/hooks/useAuth';
+import { useInstallPrompt } from '@/hooks/useInstallPrompt';
 
 /**
  * GovernmentHeader — thin institutional information bar above the main
@@ -23,6 +24,7 @@ import { useAuth, homeForRole } from '@/hooks/useAuth';
 export default function GovernmentHeader() {
   const { pathname } = useLocation();
   const { user } = useAuth();
+  const { isStandalone } = useInstallPrompt();
   const [menuOpen, setMenuOpen] = useState(false);
   const [navState, setNavState] = useState({ scrolled: false, hidden: false });
 
@@ -67,6 +69,13 @@ export default function GovernmentHeader() {
 
   return (
     <>
+      {/* Overlay behind the mobile menu */}
+      <div
+        className={`pub-mobile-overlay ${menuOpen ? 'open' : ''}`}
+        aria-hidden="true"
+        onClick={() => setMenuOpen(false)}
+      />
+
       {/* ---- Top information bar (scrolls away) ---- */}
       <div className="pub-infobar" role="note">
         <div className="pub-container pub-infobar-inner">
@@ -137,6 +146,14 @@ export default function GovernmentHeader() {
               Report a Problem
             </Link>
 
+            {/* Hidden once the site is running as an installed app */}
+            {!isStandalone && (
+              <Link to="/download" className="pub-btn pub-btn-primary pub-btn-sm">
+                <Download size={15} aria-hidden="true" />
+                Download App
+              </Link>
+            )}
+
             <button
               type="button"
               className="pub-nav-toggle"
@@ -150,25 +167,24 @@ export default function GovernmentHeader() {
           </div>
         </div>
 
-        {/* ---- Mobile menu ---- */}
+        {/* ---- Mobile menu (full-height sheet, phones/tablets) ---- */}
         <div id="pub-mobile-menu" className={`pub-mobile-menu ${menuOpen ? 'open' : ''}`}>
           <div className="pub-container">
             <nav className="pub-mobile-links" aria-label="Main menu">
-              <NavLink to="/" end className={({ isActive }) => `pub-mobile-link ${isActive ? 'active' : ''}`}>
-                Home
-              </NavLink>
-              <NavLink to="/how-it-works" className={({ isActive }) => `pub-mobile-link ${isActive ? 'active' : ''}`}>
-                How It Works
-              </NavLink>
-              <NavLink to="/community-map" className={({ isActive }) => `pub-mobile-link ${isActive ? 'active' : ''}`}>
-                Community Map
-              </NavLink>
-              <NavLink to="/about" className={({ isActive }) => `pub-mobile-link ${isActive ? 'active' : ''}`}>
-                About
-              </NavLink>
-              <NavLink to="/help" className={({ isActive }) => `pub-mobile-link ${isActive ? 'active' : ''}`}>
-                Help
-              </NavLink>
+              {NAV_LINKS.map((item, i) => (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  end={item.to === '/'}
+                  style={{ '--stagger': i }}
+                  className={({ isActive }) => `pub-mobile-link ${isActive ? 'active' : ''}`}
+                >
+                  <span className="pub-mobile-link-text">{item.label}</span>
+                  <span className="pub-mobile-link-index" aria-hidden="true">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                </NavLink>
+              ))}
             </nav>
             <div className="pub-mobile-actions">
               {user ? (
@@ -178,6 +194,14 @@ export default function GovernmentHeader() {
               )}
               <Link to={REPORT_ROUTE} className="pub-btn pub-btn-primary">Report a Problem</Link>
             </div>
+            {!isStandalone && (
+              <div className="pub-mobile-actions pub-mobile-actions-secondary">
+                <Link to="/download" className="pub-btn pub-btn-secondary">
+                  <Download size={15} aria-hidden="true" />
+                  Download App
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </header>

@@ -12,7 +12,7 @@
  */
 
 const TILE_STYLES = {
-  light: (z, x, y) => `https://basemaps.cartocdn.com/light_all/${z}/${x}/${y}.png`,
+  light: (z, x, y) => `https://tile.openstreetmap.org/${z}/${x}/${y}.png`,
   streets: (z, x, y) => `https://tile.openstreetmap.org/${z}/${x}/${y}.png`,
   satellite: (z, x, y) =>
     `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${y}/${x}`,

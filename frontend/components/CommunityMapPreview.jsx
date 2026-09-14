@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { MapPin, Layers, Cpu, ThumbsUp, AlertTriangle, Navigation, Eye, Globe, Crosshair, ArrowRight } from 'lucide-react';
 

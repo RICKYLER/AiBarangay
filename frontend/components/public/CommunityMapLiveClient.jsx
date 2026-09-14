@@ -10,7 +10,12 @@ const CommunityMapLive = dynamic(() => import('./CommunityMapLive'), {
     <div
       role="status"
       aria-label="Loading map"
-      style={{ width: '100%', height: '560px', background: '#0b1120', borderRadius: 8 }}
+      style={{
+        width: '100%',
+        height: 'clamp(380px, 60dvh, 560px)',
+        background: '#0b1120',
+        borderRadius: 8,
+      }}
     />
   ),
 });

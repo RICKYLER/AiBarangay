@@ -21,7 +21,7 @@ export async function logout() {
 }
 
 export async function me() {
-  return apiGet<{ user: User }>('/api/auth/me');
+  return apiGet<{ user: User | null }>('/api/auth/me');
 }
 
 export async function resendVerification(email: string) {
