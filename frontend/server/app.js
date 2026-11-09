@@ -8,6 +8,7 @@ import * as auth from './modules/auth/auth.controller.js';
 import * as lookups from './modules/lookups/lookups.controller.js';
 import * as reports from './modules/reports/reports.controller.js';
 import * as barangay from './modules/barangay/barangay.controller.js';
+import * as ai from './modules/ai/ai.controller.js';
 import * as gis from './modules/gis/gis.controller.js';
 import * as notifications from './modules/notifications/notifications.controller.js';
 import * as chat from './modules/chat/chat.controller.js';
@@ -101,6 +102,9 @@ app.get('/api/barangay/review-queue', requireAuth, requireRole(...STAFF_ROLES), 
 app.get('/api/barangay/reports/:id', requireAuth, requireRole(...STAFF_ROLES), barangay.reviewDetail);
 app.post('/api/barangay/reports/:id/verify', requireAuth, requireRole(...STAFF_ROLES), barangay.verifyReport);
 app.post('/api/barangay/reports/:id/reject', requireAuth, requireRole(...STAFF_ROLES), barangay.rejectReport);
+
+/* ---------- ai (decision-support stats) ---------- */
+app.get('/api/ai/accuracy', requireAuth, requireRole(...STAFF_ROLES), ai.accuracy);
 
 /* ---------- admin: user management ---------- */
 app.get('/api/admin/users', requireAuth, requireRole(...ADMIN_ROLES), adminUsers.listUsers);

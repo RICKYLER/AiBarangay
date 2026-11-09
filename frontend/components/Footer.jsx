@@ -31,7 +31,7 @@ export default function Footer({ onOpenHelp }) {
             <div className="brand-logo">
               <div className="logo-icon-wrapper">
                 <Shield size={22} />
-                <span className="logo-ai-badge">AI</span>
+                <span className="logo-ai-badge">AI</span>+
               </div>
               <div className="logo-text">
                 <span className="brand-title">AI BARANGAY</span>

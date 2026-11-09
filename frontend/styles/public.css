@@ -5197,7 +5197,7 @@ html:has(.pub-app) {
    ------------------------------------------------------------ */
 .pub-dl-ref-hero {
   text-align: center;
-  padding: 48px 0 0;
+  padding: 52px 0 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -5205,9 +5205,11 @@ html:has(.pub-app) {
 
 .pub-dl-ref-eyebrow {
   font-family: var(--pub-font-body);
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--pub-text-2);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #0d9488;
   margin-bottom: 12px;
 }
 
@@ -5218,7 +5220,68 @@ html:has(.pub-app) {
   line-height: 1.12;
   letter-spacing: -0.02em;
   color: #135747; /* Deep green matching reference image */
-  margin-bottom: 28px;
+  margin-bottom: 24px;
+}
+
+/* Primary Direct Install CTA */
+.pub-dl-hero-cta-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.pub-app button.pub-dl-primary-cta,
+.pub-app a.pub-dl-primary-cta,
+.pub-dl-primary-cta {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 11px !important;
+  padding: 14px 30px !important;
+  min-height: 52px !important;
+  background: linear-gradient(135deg, #135747 0%, #0d9488 100%) !important;
+  color: #ffffff !important;
+  border-radius: 14px !important;
+  font-family: var(--pub-font-display), inherit !important;
+  font-size: 15.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.01em !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 8px 24px -4px rgba(19, 87, 71, 0.4) !important;
+  cursor: pointer !important;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease !important;
+  user-select: none;
+}
+
+.pub-app button.pub-dl-primary-cta:hover,
+.pub-app a.pub-dl-primary-cta:hover,
+.pub-dl-primary-cta:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 14px 30px -4px rgba(19, 87, 71, 0.5) !important;
+  filter: brightness(1.06) !important;
+  color: #ffffff !important;
+}
+
+.pub-app button.pub-dl-primary-cta:active,
+.pub-app a.pub-dl-primary-cta:active,
+.pub-dl-primary-cta:active {
+  transform: translateY(0) scale(0.98) !important;
+}
+
+.pub-dl-hero-subtag {
+  font-size: 12px;
+  font-weight: 600;
+  color: #047857;
+  background: #ecfdf5;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid #a7f3d0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
 }
 
 .pub-dl-ref-badges {
@@ -5227,45 +5290,63 @@ html:has(.pub-app) {
   justify-content: center;
   gap: 14px;
   flex-wrap: wrap;
-  margin-bottom: 44px;
+  margin-bottom: 56px; /* Generous breathing room above 3 phones */
 }
 
+/* Bulletproof Store Badge Styling */
+.pub-app button.pub-dl-store-badge,
+.pub-app a.pub-dl-store-badge,
 .pub-dl-store-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 22px;
-  background: #000000;
-  color: #ffffff;
-  border-radius: 12px;
-  text-decoration: none;
-  font-family: var(--pub-font-body);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  cursor: pointer;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  padding: 10px 22px !important;
+  min-height: 48px !important;
+  background: #0b0f19 !important; /* Sleek dark slate */
+  color: #ffffff !important;
+  border-radius: 12px !important;
+  text-decoration: none !important;
+  font-family: var(--pub-font-body), inherit !important;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, border-color 0.2s ease !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;
+  user-select: none;
 }
 
+.pub-app button.pub-dl-store-badge:hover,
+.pub-app a.pub-dl-store-badge:hover,
 .pub-dl-store-badge:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
-  color: #ffffff;
-  background: #111111;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.32) !important;
+  background: #1e293b !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  color: #ffffff !important;
+}
+
+.pub-app button.pub-dl-store-badge:active,
+.pub-app a.pub-dl-store-badge:active,
+.pub-dl-store-badge:active {
+  transform: translateY(0) scale(0.98) !important;
 }
 
 .pub-dl-store-badge-sub {
-  font-size: 9.5px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  opacity: 0.8;
-  display: block;
-  line-height: 1;
+  font-size: 9.5px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: rgba(255, 255, 255, 0.72) !important;
+  display: block !important;
+  line-height: 1 !important;
+  margin-bottom: 2px !important;
 }
 
 .pub-dl-store-badge-title {
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.2;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  color: #ffffff !important;
+  display: block !important;
 }
 
 /* 3-Phone Overlapping Showcase */
@@ -6247,6 +6328,417 @@ html:has(.pub-app) {
      fade transition is disabled here. */
   .pub-mobile-overlay {
     animation: none;
+    transition: none;
+  }
+}
+
+/* ============================================================
+   27. LOGIN — SPLIT-SCREEN ENTRY (.pub-login-*)
+   ------------------------------------------------------------
+   Editorial civic-tech: the sign-in is a two-panel spread, not a
+   floating SaaS card. Left — deep forest-green civic panel (what
+   the platform does: map line-art, report→review→track, live
+   public-map count). Right — warm ivory form column.
+   Radius is deliberately varied: crisp seam (0), the primary
+   button carries one tight corner (3px) as the page signature,
+   inputs 8px.
+   ============================================================ */
+
+.pub-login {
+  /* text-accent on the dark panel — mint, NOT teal: #2BA889 on
+     #0E4C41 fails contrast for text; this passes ~6.8:1 */
+  --pub-login-mint: #9fe0c9;
+  /* slightly darker than --pub-text-2 for 15px body copy (AA) */
+  --pub-login-text-2: #56635d;
+  --pub-login-corner: 10px 10px 10px 3px;
+}
+
+.pub-login-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(420px, 46%) 1fr;
+}
+
+/* The mobile tab bar's page padding does not apply to auth pages */
+.pub-login {
+  padding-bottom: 0;
+}
+
+/* ------------------------------------------------------------ */
+/* 27.1 LEFT — civic context panel                              */
+/* ------------------------------------------------------------ */
+
+.pub-login-aside {
+  background: var(--pub-dark);
+  color: var(--pub-bg);
+  display: flex;
+  flex-direction: column;
+  padding: 34px 44px 30px;
+}
+
+.pub-login-aside-top {
+  display: flex;
+}
+
+.pub-login-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  color: inherit;
+}
+
+.pub-login-brand-mark {
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(247, 246, 237, 0.35);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--pub-login-mint);
+}
+
+.pub-login-brand-title {
+  display: block;
+  font-family: var(--pub-font-display);
+  font-size: 15.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+.pub-login-brand-sub {
+  display: block;
+  font-family: var(--pub-font-mono);
+  font-size: 10.5px;
+  color: rgba(247, 246, 237, 0.78);
+  letter-spacing: 0.02em;
+}
+
+.pub-login-aside-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 44px 0 36px;
+}
+
+.pub-login-kicker {
+  font-family: var(--pub-font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--pub-login-mint);
+  margin-bottom: 18px;
+}
+
+.pub-login-headline {
+  font-family: var(--pub-font-display);
+  font-size: clamp(32px, 3.6vw, 46px);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.018em;
+  color: #ffffff;
+}
+
+.pub-login-headline-em {
+  display: block;
+  margin-top: 10px;
+  font-weight: 500;
+  color: var(--pub-login-mint);
+}
+
+/* The live stat — poster typography: one huge number, a small label
+   under it. No icon, no card, no border. The number is the second
+   dominant element after the headline. */
+.pub-login-hero-stat {
+  margin-top: 44px;
+}
+
+.pub-login-hero-stat-num {
+  display: block;
+  font-family: var(--pub-font-display);
+  font-size: clamp(64px, 6.5vw, 84px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+}
+
+.pub-login-hero-stat-label {
+  display: block;
+  max-width: 30ch;
+  margin-top: 12px;
+  font-family: var(--pub-font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  letter-spacing: 0.03em;
+  color: rgba(247, 246, 237, 0.78);
+}
+
+.pub-login-aside-foot {
+  border-top: 1px solid rgba(247, 246, 237, 0.14);
+  padding-top: 20px;
+}
+
+/* The process, restyled as a pure typographic list: mono numbers,
+   display-weight titles, muted text — hierarchy from weight and
+   spacing, hairline rules between items, no boxes or icons. */
+.pub-login-steps {
+  list-style: none;
+}
+
+.pub-login-steps li {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  padding: 13px 0;
+}
+
+.pub-login-steps li + li {
+  border-top: 1px solid rgba(247, 246, 237, 0.12);
+}
+
+.pub-login-step-n {
+  flex-shrink: 0;
+  font-family: var(--pub-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--pub-login-mint);
+}
+
+.pub-login-step-body {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+
+.pub-login-step-t {
+  font-family: var(--pub-font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.pub-login-step-x {
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(247, 246, 237, 0.75);
+}
+
+/* ------------------------------------------------------------ */
+/* 27.2 RIGHT — form column                                     */
+/* ------------------------------------------------------------ */
+
+.pub-login-main {
+  display: flex;
+  flex-direction: column;
+  padding: 26px clamp(24px, 5vw, 72px);
+  min-width: 0;
+}
+
+.pub-login-main-top {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.pub-login-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--pub-dark);
+  padding: 8px 12px;
+  border-radius: var(--pub-radius-sm);
+  transition: background var(--pub-speed);
+}
+
+.pub-login-back:hover {
+  background: var(--pub-sage);
+}
+
+.pub-login-formwrap {
+  width: 100%;
+  max-width: 430px;
+  margin: auto; /* dead-center the form in the remaining column */
+  padding: 34px 0;
+}
+
+.pub-login-form-kicker {
+  font-family: var(--pub-font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--pub-green-deep);
+}
+
+.pub-login-title {
+  font-family: var(--pub-font-display);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--pub-dark);
+  margin-top: 6px;
+}
+
+.pub-login-sub {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--pub-login-text-2);
+  margin-top: 8px;
+}
+
+/* ---- form ---- */
+
+.pub-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 16px inputs: prevents iOS Safari auto-zoom on focus */
+.pub-login .pub-input {
+  font-size: 16px;
+  padding: 13px 14px;
+}
+
+.pub-login .pub-label {
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.pub-login-link {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--pub-green-deep); /* teal on white fails AA for links */
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(30, 125, 102, 0.4);
+}
+
+.pub-login-link:hover {
+  text-decoration-color: currentColor;
+}
+
+.pub-login-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  min-height: 52px;
+  margin-top: 4px;
+  background: var(--pub-dark);
+  color: #ffffff;
+  font-family: var(--pub-font-display);
+  font-size: 15.5px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  border-radius: var(--pub-login-corner);
+  transition: background var(--pub-speed), transform var(--pub-speed);
+}
+
+.pub-login-submit:hover:not(:disabled) {
+  background: var(--pub-dark-deep);
+}
+
+.pub-login-submit:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.pub-login-submit:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.pub-login-alt {
+  text-align: center;
+  font-size: 14px;
+  color: var(--pub-login-text-2);
+}
+
+.pub-login-legal {
+  margin-top: auto;
+  padding-top: 20px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--pub-text-3);
+}
+
+.pub-login-legal-sep {
+  margin: 0 6px;
+}
+
+/* ------------------------------------------------------------ */
+/* 27.3 responsive                                              */
+/* ------------------------------------------------------------ */
+
+@media (max-width: 960px) {
+  .pub-login-shell {
+    grid-template-columns: 1fr;
+  }
+
+  /* the civic panel becomes the top band: brand, kicker, headline,
+     and the live stat survive; the process list folds away */
+  .pub-login-aside {
+    padding: 22px 24px 26px;
+  }
+
+  .pub-login-aside-main {
+    padding: 26px 0 0;
+    justify-content: flex-start;
+  }
+
+  .pub-login-aside-foot {
+    display: none;
+  }
+
+  .pub-login-hero-stat {
+    margin-top: 26px;
+  }
+
+  .pub-login-hero-stat-num {
+    font-size: 56px;
+  }
+
+  .pub-login-main {
+    padding: 18px 24px 32px;
+  }
+
+  .pub-login-main-top {
+    display: none; /* the brand link above already goes home */
+  }
+
+  .pub-login-formwrap {
+    margin: 0;
+    padding: 22px 0 0;
+  }
+}
+
+@media (min-width: 961px) and (max-height: 720px) {
+  /* short viewports: tighten the aside so the form stays fully visible */
+  .pub-login-aside-main {
+    padding: 20px 0 16px;
+  }
+
+  .pub-login-hero-stat {
+    margin-top: 26px;
+  }
+
+  .pub-login-hero-stat-num {
+    font-size: 56px;
+  }
+
+  .pub-login-steps li {
+    padding: 9px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pub-login-submit,
+  .pub-login-back {
     transition: none;
   }
 }

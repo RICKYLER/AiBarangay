@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from '@/lib/router-shim';
-import { Cpu, Copy, TrendingUp, AlertTriangle, ArrowRight, Database } from 'lucide-react';
+import { Cpu, Copy, TrendingUp, AlertTriangle, ArrowRight, Target } from 'lucide-react';
 import {
   PageHeader, Card, StatCard, AIInsightCard, AIDisclaimer, SecurityStrip,
 } from '@/components/gov';
@@ -15,6 +15,23 @@ const DUPLICATE_MATCHES = [
 ];
 
 export default function BarangayAiIntel() {
+  // Live accuracy: how often the AI's suggested priority matched the
+  // reviewer's final call (from /api/ai/accuracy). The rest of this
+  // page's overview numbers are still placeholder data.
+  const [accuracy, setAccuracy] = useState(null);
+
+  useEffect(() => {
+    fetch('/api/ai/accuracy')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => { if (data) setAccuracy(data); })
+      .catch(() => {});
+  }, []);
+
+  // Prefer this month; fall back to all-time until the month has data.
+  const period = accuracy
+    ? (accuracy.month.total ? accuracy.month : accuracy.allTime.total ? accuracy.allTime : null)
+    : null;
+
   return (
     <div className="gov-page">
 
@@ -28,7 +45,15 @@ export default function BarangayAiIntel() {
 
       {/* AI OVERVIEW */}
       <div className="gov-stat-grid">
-        <StatCard label="REPORTS ANALYZED" value="1,284" icon={Database} variant="info" note="100% vector geotagged" />
+        <StatCard
+          label="AI PRIORITY ACCURACY"
+          value={period ? `${period.rate}%` : '—'}
+          icon={Target}
+          variant="info"
+          note={period
+            ? `AI suggestion vs reviewer's final call · ${period.total} verified report${period.total === 1 ? '' : 's'}`
+            : 'no verified reports to compare yet'}
+        />
         <StatCard label="POTENTIAL DUPLICATES" value="73" icon={Copy} variant="attention" note="clustered within 30 m radius" />
         <StatCard label="HIGH-RISK HAZARDS" value="49" icon={AlertTriangle} variant="critical" note="sub-24 hr target action" />
         <StatCard label="EMERGING HOTSPOTS" value="8" icon={TrendingUp} variant="neutral" note="across barangay zones" />

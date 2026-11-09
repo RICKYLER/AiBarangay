@@ -146,10 +146,10 @@ export default function GovernmentHeader() {
               Report a Problem
             </Link>
 
-            {/* Hidden once the site is running as an installed app */}
-            {!isStandalone && (
-              <Link to="/download" className="pub-btn pub-btn-primary pub-btn-sm">
-                <Download size={15} aria-hidden="true" />
+            {/* Hidden once running standalone, or if already on the /download page */}
+            {!isStandalone && pathname !== '/download' && (
+              <Link to="/download" className="pub-btn pub-btn-secondary pub-btn-sm">
+                <Download size={14} aria-hidden="true" />
                 Download App
               </Link>
             )}
@@ -194,7 +194,7 @@ export default function GovernmentHeader() {
               )}
               <Link to={REPORT_ROUTE} className="pub-btn pub-btn-primary">Report a Problem</Link>
             </div>
-            {!isStandalone && (
+            {!isStandalone && pathname !== '/download' && (
               <div className="pub-mobile-actions pub-mobile-actions-secondary">
                 <Link to="/download" className="pub-btn pub-btn-secondary">
                   <Download size={15} aria-hidden="true" />
